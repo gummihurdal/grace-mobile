@@ -27,33 +27,42 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync ios
 
-      - name: Install Fastlane
+      - name: Setup API key
         run: |
-          gem install fastlane
+          mkdir -p ~/private_keys
+          echo "$APP_STORE_CONNECT_KEY_P8" > ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
 
-      - name: Setup App Store Connect API key
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Create Fastfile
+        working-directory: ios/App
         run: |
-          mkdir -p ~/.appstoreconnect/private_keys
-          echo "$APP_STORE_CONNECT_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
-          mkdir -p ios/App/fastlane
-          cat > ios/App/fastlane/Fastfile << 'FAST'
+          mkdir -p fastlane
+          cat > fastlane/Fastfile << 'FAST'
           default_platform(:ios)
           platform :ios do
-            desc "Build and upload to App Store Connect"
             lane :release do
               setup_ci
-              app_store_connect_api_key(
+              api_key = app_store_connect_api_key(
                 key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
                 issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-                key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8"),
+                key_filepath: File.expand_path("~/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8"),
                 in_house: false
               )
-              match(
-                type: "appstore",
+              # Auto-create certificate and profile
+              cert(api_key: api_key)
+              sigh(
+                api_key: api_key,
                 app_identifier: "day.graceforevery.app",
-                readonly: false,
-                git_url: "https://github.com/gummihurdal/grace-mobile.git",
-                git_branch: "certificates"
+                force: true
+              )
+              update_code_signing_settings(
+                use_automatic_signing: false,
+                path: "App.xcodeproj",
+                team_id: "XT323ZDS6N",
+                bundle_identifier: "day.graceforevery.app",
+                profile_name: lane_context[SharedValues::SIGH_NAME]
               )
               build_app(
                 workspace: "App.xcworkspace",
@@ -62,24 +71,19 @@ jobs:
                 output_directory: "./build",
                 output_name: "Grace.ipa"
               )
-              upload_to_app_store(
-                skip_metadata: true,
-                skip_screenshots: true,
-                precheck_include_in_app_purchases: false
+              upload_to_testflight(
+                api_key: api_key,
+                skip_waiting_for_build_processing: true
               )
             end
           end
           FAST
 
-      - name: Build and upload with Fastlane
+      - name: Build and upload
         working-directory: ios/App
-        run: |
-          fastlane release
-        env:
-          MATCH_PASSWORD: "GraceForEveryDay2026"
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.GITHUB_TOKEN }}
+        run: fastlane release
 
-      - name: Upload IPA artifact (backup)
+      - name: Upload IPA artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
