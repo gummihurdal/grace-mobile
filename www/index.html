@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey with God</title>
+  <meta name="msvalidate.01" content="42835C184A577B685625DC0A3F507F34">
+  <meta name="description" content="Journey with God — Daily Scripture, devotional readings, deep theological study, and a community walking together in faith. Pause. Reflect. Walk.">
+  <meta name="keywords" content="daily devotional, Bible study, Christian faith, scripture, theology, prayer, discipleship, spiritual growth, daily Bible reading">
+  <meta name="author" content="Journey with God">
+  <meta property="og:title" content="Journey with God — Daily Scripture & Reflection">
+  <meta property="og:description" content="A place to pause with the Word. Daily devotions, deep study, and a community walking together in scripture.">
+  <meta property="og:url" content="https://graceforevery.day/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Journey with God">
+  <meta name="twitter:description" content="Daily Scripture, devotional readings and deep theological study.">
+  <link rel="canonical" href="https://graceforevery.day/">
+  <meta name="robots" content="index, follow">
+  <meta name="msvalidate.01" content="42835C184A577B685625DC0A3F507F34">
+  <meta name="msvalidate.01" content="42835C184A577B685625DC0A3F507F34" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0E1628;--navy2:#131D35;--navy4:#0A1020;
+  --gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;
+  --text:#C8B898;--text-d:#6A6050;--text-b:#EDE0C0;
+  --border:rgba(201,164,58,0.18);--border2:rgba(201,164,58,0.08);
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{
+  position:relative;height:100vh;min-height:600px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:url('hero-beach.jpg');
+  background-size:cover;background-position:center 30%;
+  transform:scale(1.05);
+  animation:heroZoom 20s ease-in-out infinite alternate;
+}
+@keyframes heroZoom{
+  from{transform:scale(1.05) translateY(0)}
+  to{transform:scale(1.12) translateY(-2%)}
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(8,13,26,0.35) 0%,
+    rgba(8,13,26,0.2) 30%,
+    rgba(8,13,26,0.4) 60%,
+    rgba(8,13,26,0.85) 100%
+  );
+}
+.hero-content{
+  position:relative;z-index:2;text-align:center;padding:0 24px;
+  animation:fadeUp 1.4s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-eyebrow{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:8px;
+  text-transform:uppercase;color:rgba(255,255,255,0.92);
+  margin-bottom:24px;opacity:1;
+  text-shadow:0 2px 16px rgba(0,0,0,0.9),0 1px 4px rgba(0,0,0,0.8);
+  animation:fadeUp 1.4s .2s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(36px,6vw,88px);
+  font-weight:400;color:#fff;
+  line-height:1.1;letter-spacing:2px;
+  text-shadow:0 4px 40px rgba(0,0,0,0.5);
+  margin-bottom:20px;
+  animation:fadeUp 1.4s .35s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-rule{
+  width:60px;height:1px;background:var(--gold);
+  margin:0 auto 20px;opacity:.7;
+  animation:fadeUp 1.4s .5s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-sub{
+  font-size:clamp(17px,2.2vw,23px);font-style:italic;font-weight:300;
+  color:rgba(237,224,192,0.85);line-height:1.65;max-width:560px;
+  animation:fadeUp 1.4s .55s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-ctas{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-top:44px;
+  animation:fadeUp 1.4s .7s cubic-bezier(0.22,1,0.36,1) both;
+}
+.cta-primary{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--navy4);background:var(--gold);
+  border:none;padding:16px 40px;cursor:pointer;text-decoration:none;
+  transition:all .3s;display:inline-block;
+  box-shadow:0 0 32px rgba(201,164,58,0.3);
+}
+.cta-primary:hover{background:var(--gold-l);box-shadow:0 0 48px rgba(201,164,58,0.5);transform:translateY(-1px)}
+.cta-secondary{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(237,224,192,0.85);background:transparent;
+  border:1px solid rgba(237,224,192,0.3);padding:16px 32px;cursor:pointer;text-decoration:none;
+  transition:all .3s;display:inline-block;
+}
+.cta-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeUp 1.4s 1s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-scroll span{font-family:'Cinzel',serif;font-size:7px;letter-spacing:5px;text-transform:uppercase;color:rgba(237,224,192,0.4)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold-d),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.4;transform:scaleY(.8)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ── TODAY STRIP ── */
+.today-strip{
+  background:var(--navy2);border-bottom:1px solid var(--border2);
+  padding:20px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.ts-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d)}
+.ts-text{font-size:16px;font-style:italic;color:var(--text-b);flex:1;text-align:center}
+.ts-ref{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);white-space:nowrap}
+
+/* ── FEATURE CARDS ── */
+.features{padding:96px 48px;background:var(--navy4)}
+.section-eyebrow{font-family:'Cinzel',serif;font-size:8px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-d);text-align:center;margin-bottom:12px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(20px,2.5vw,30px);font-weight:500;color:var(--text-b);text-align:center;margin-bottom:56px;letter-spacing:1px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;max-width:1200px;margin:0 auto;background:var(--border2)}
+.card{
+  background:var(--navy);padding:40px 32px;text-decoration:none;
+  border-top:2px solid transparent;
+  transition:all .35s cubic-bezier(0.22,1,0.36,1);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,164,58,0.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .35s;
+}
+.card:hover{background:var(--navy2);border-top-color:var(--gold-d);transform:translateY(-2px)}
+.card:hover::before{opacity:1}
+.card-icon{font-size:22px;margin-bottom:20px;opacity:.7;transition:opacity .3s}
+.card:hover .card-icon{opacity:1}
+.card-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:12px}
+.card-title{font-family:'Cinzel',serif;font-size:clamp(15px,1.8vw,19px);font-weight:500;color:var(--text-b);margin-bottom:12px;line-height:1.35}
+.card-desc{font-size:clamp(14px,1.5vw,16px);line-height:1.8;color:var(--text-d);font-style:italic;font-weight:300;flex:1}
+.card-arrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold-d);margin-top:24px;transition:all .3s;display:inline-block}
+.card:hover .card-arrow{color:var(--gold);letter-spacing:5px}
+
+/* ── VERSE OF THE DAY ── */
+.verse-section{
+  position:relative;padding:100px 48px;overflow:hidden;
+  background:var(--navy2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);
+}
+.verse-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(201,164,58,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.verse-inner{max-width:760px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.verse-orn{font-size:28px;color:var(--gold-d);opacity:.5;margin-bottom:28px;letter-spacing:12px}
+.verse-text{
+  font-size:clamp(22px,3vw,38px);font-style:italic;font-weight:300;
+  color:var(--text-b);line-height:1.7;margin-bottom:20px;
+}
+.verse-ref{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.verse-cta{
+  display:inline-block;margin-top:36px;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold-d);text-decoration:none;border-bottom:1px solid var(--gold-d);
+  padding-bottom:3px;transition:all .3s;
+}
+.verse-cta:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── STUDIES STRIP ── */
+.studies{padding:80px 48px;background:var(--navy4)}
+.studies-inner{max-width:1200px;margin:0 auto}
+.studies-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap}
+.studies-head-left{}
+.studies-all{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);text-decoration:none;border-bottom:1px solid var(--gold-d);padding-bottom:2px;transition:all .3s}
+.studies-all:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border2)}
+.topic-pill{
+  background:var(--navy);padding:20px 20px;text-decoration:none;
+  display:flex;align-items:center;gap:12px;
+  transition:all .25s;border-left:2px solid transparent;
+}
+.topic-pill:hover{background:var(--navy2);border-left-color:var(--gold-d)}
+.tp-num{font-family:'Cinzel',serif;font-size:9px;color:var(--text-d);min-width:18px}
+.tp-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-b);transition:color .25s;line-height:1.3}
+.topic-pill:hover .tp-name{color:var(--gold)}
+
+/* ── FOOTER ── */
+.footer{
+  background:var(--navy);border-top:1px solid var(--border2);
+  padding:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.footer-brand{font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.footer-sub{font-size:13px;font-style:italic;color:var(--text-d);margin-top:4px}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap}
+.footer-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d);text-decoration:none;transition:color .2s}
+.footer-link:hover{color:var(--gold)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .hero-title{font-size:clamp(28px,10vw,52px)}
+  .today-strip{flex-direction:column;text-align:center;padding:20px 24px}
+  .features{padding:64px 20px}
+  .verse-section{padding:72px 24px}
+  .studies{padding:56px 20px}
+  .footer{padding:36px 24px;flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+  .hero-ctas{flex-direction:column;align-items:center}
+  .cta-primary,.cta-secondary{width:100%;max-width:260px;text-align:center}
+}
+.sb-section-lbl{padding:14px 24px 6px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);opacity:.8;border-top:1px solid var(--border2);margin-top:4px}
+.sb-sub-link{padding:8px 24px 8px 32px!important;font-size:10px!important;letter-spacing:2px!important;color:var(--text-d)!important}
+.sb-sub-link:hover{color:var(--gold)!important}
+.sb-sub-link.on{color:var(--gold)!important;border-left-color:var(--gold)!important}
+
+@media(max-width:768px){
+  .cta-dropdown{min-width:180px;left:0;transform:none}
+  .cta-dropdown-btn{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Pause · Reflect · Walk</div>
+    <h1 class="hero-title">Journey with God</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">A place to pause with the Word. Daily devotions, deep study, and a community walking together in scripture.</p>
+    <div class="hero-ctas">
+      <a class="cta-primary" href="devotion.html">Daily Devotional</a>
+      <a class="cta-secondary" href="devotion.html?study=open">Study Topics</a>
+      <a class="cta-secondary" href="blog.html">Blog</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll Down</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- TODAY'S VERSE STRIP -->
+<div class="today-strip" id="today-strip">
+  <div class="ts-label">Today's Scripture</div>
+  <div class="ts-text" id="ts-text">…</div>
+  <div class="ts-ref" id="ts-ref"></div>
+</div>
+
+<!-- FEATURE CARDS -->
+<section class="features" id="explore">
+  <div class="section-eyebrow">Everything in One Place</div>
+  <div class="section-title">Where would you like to begin?</div>
+  <div class="cards">
+    <a class="card" href="devotion.html">
+      <div class="card-icon">🕯️</div>
+      <div class="card-label">Every Day</div>
+      <div class="card-title">Daily Devotion</div>
+      <div class="card-desc">A fresh meditation each morning — scripture, reflection, a closing prayer, and a call to walk differently today.</div>
+      <div class="card-arrow">Enter →</div>
+    </a>
+    <a class="card" href="topics.html">
+      <div class="card-icon">📖</div>
+      <div class="card-label">12 Topics</div>
+      <div class="card-title">Study Topics</div>
+      <div class="card-desc">Deep-dive lessons on Identity, The Cross, Prayer, Suffering, Holiness and more. Structured to take you further.</div>
+      <div class="card-arrow">Study →</div>
+    </a>
+    <a class="card" href="calendar.html">
+      <div class="card-icon">📅</div>
+      <div class="card-label">Year View</div>
+      <div class="card-title">Devotion Calendar</div>
+      <div class="card-desc">See every devotion across the year. Navigate by month, revisit past days, or plan ahead in your walk.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+    <a class="card" href="archive.html">
+      <div class="card-icon">🗂️</div>
+      <div class="card-label">Full Archive</div>
+      <div class="card-title">Archive</div>
+      <div class="card-desc">Browse every devotion ever written. Filter by theme, scripture, or season. Nothing lost, everything available.</div>
+      <div class="card-arrow">Browse →</div>
+    </a>
+    <a class="card" href="blog.html">
+      <div class="card-icon">✦</div>
+      <div class="card-label">Community</div>
+      <div class="card-title">Blog</div>
+      <div class="card-desc">Share what God is speaking to you. Read what others are carrying. Walk together, even from a distance.</div>
+      <div class="card-arrow">Join →</div>
+    </a>
+    <a class="card" href="settings.html">
+      <div class="card-icon">⚙️</div>
+      <div class="card-label">Your Experience</div>
+      <div class="card-title">Settings</div>
+      <div class="card-desc">Personalise your name, reading preferences, and how the word is presented to you each day.</div>
+      <div class="card-arrow">Configure →</div>
+    </a>
+  </div>
+</section>
+
+<!-- VERSE SECTION -->
+<section class="verse-section">
+  <div class="verse-inner">
+    <div class="verse-orn">· · ·</div>
+    <div class="verse-text" id="verse-text">Loading…</div>
+    <div class="verse-ref" id="verse-ref"></div>
+    <a class="verse-cta" href="devotion.html">Read today's full devotion →</a>
+  </div>
+</section>
+
+<!-- STUDY TOPICS STRIP -->
+<section class="studies">
+  <div class="studies-inner">
+    <div class="studies-head">
+      <div class="studies-head-left">
+        <div class="section-eyebrow" style="text-align:left;margin-bottom:6px">Structured Study</div>
+        <div class="section-title" style="text-align:left;margin-bottom:0;font-size:clamp(16px,2vw,22px)">Twelve Topics to Go Deeper</div>
+      </div>
+      <a class="studies-all" href="topics.html">All Topics →</a>
+    </div>
+    <div class="topics-grid">
+      <a class="topic-pill" href="learn.html?topic=christian-identity"><span class="tp-num">01</span><span class="tp-name">Christian Identity</span></a>
+      <a class="topic-pill" href="learn.html?topic=the-cross"><span class="tp-num">02</span><span class="tp-name">The Cross</span></a>
+      <a class="topic-pill" href="learn.html?topic=discipleship"><span class="tp-num">03</span><span class="tp-name">Discipleship</span></a>
+      <a class="topic-pill" href="learn.html?topic=apologetics"><span class="tp-num">04</span><span class="tp-name">Apologetics</span></a>
+      <a class="topic-pill" href="learn.html?topic=prayer"><span class="tp-num">05</span><span class="tp-name">Prayer</span></a>
+      <a class="topic-pill" href="learn.html?topic=suffering"><span class="tp-num">06</span><span class="tp-name">Suffering</span></a>
+      <a class="topic-pill" href="learn.html?topic=holy-spirit"><span class="tp-num">07</span><span class="tp-name">Holy Spirit</span></a>
+      <a class="topic-pill" href="learn.html?topic=sin-and-grace"><span class="tp-num">08</span><span class="tp-name">Sin &amp; Grace</span></a>
+      <a class="topic-pill" href="learn.html?topic=the-church"><span class="tp-num">09</span><span class="tp-name">The Church</span></a>
+      <a class="topic-pill" href="learn.html?topic=eternity"><span class="tp-num">10</span><span class="tp-name">Eternity</span></a>
+      <a class="topic-pill" href="learn.html?topic=the-sabbath"><span class="tp-num">11</span><span class="tp-name">The Sabbath</span></a>
+      <a class="topic-pill" href="learn.html?topic=holiness-of-god"><span class="tp-num">12</span><span class="tp-name">Holiness of God</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <div class="footer-brand">Journey with God</div>
+    <div class="footer-sub">Daily Scripture &amp; Reflection</div>
+  </div>
+  <div class="footer-links">
+    <a class="footer-link" href="devotion.html">Devotion</a>
+    <a class="footer-link" href="calendar.html">Calendar</a>
+    <a class="footer-link" href="archive.html">Archive</a>
+    <a class="footer-link" href="well.html">The Well</a>
+    <a class="footer-link" href="blog.html">Blog</a>
+    <a class="footer-link" href="contact.html">Contact</a>
+    <a class="footer-link" href="settings.html">Settings</a>
+  </div>
+</footer>
+
+<script>
+const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+
+async function loadTodayVerse(){
+  const now=new Date();
+  const mm=String(now.getMonth()+1).padStart(2,'0'),dd=String(now.getDate()).padStart(2,'0');
+  try{
+    const r=await fetch(`${SB}/rest/v1/devotionals?month_day=eq.${mm}-${dd}&select=scripture_text,scripture_reference,quote_text,quote_author&limit=1`,{
+      headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}
+    });
+    const rows=await r.json();
+    if(rows?.length){
+      const d=rows[0];
+      // Strip
+      const stripEl=document.getElementById('ts-text');
+      const refEl=document.getElementById('ts-ref');
+      if(stripEl) stripEl.textContent='\u201c'+d.scripture_text+'\u201d';
+      if(refEl) refEl.textContent=d.scripture_reference;
+      // Big verse section
+      const vtEl=document.getElementById('verse-text');
+      const vrEl=document.getElementById('verse-ref');
+      if(vtEl) vtEl.textContent='\u201c'+d.quote_text+'\u201d';
+      if(vrEl) vrEl.textContent='\u2014 '+d.quote_author;
+    }
+  }catch(e){}
+}
+
+// Intersection observer for card reveal
+const cards=document.querySelectorAll('.card,.topic-pill');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e)=>{
+    if(e.isIntersecting){
+      const delay=(e.target.dataset.i||0)*60;
+      setTimeout(()=>{
+        e.target.style.transition='opacity .5s ease, transform .5s ease';
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+      }, delay);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.05,rootMargin:'0px 0px -20px 0px'});
+cards.forEach((c,i)=>{
+  c.dataset.i=i;
+  c.style.opacity='0';
+  c.style.transform='translateY(20px)';
+  obs.observe(c);
+});
+
+
+
+loadTodayVerse();
+</script>
+<script>
+(function(){
+  try{
+    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+    const page=window.location.pathname.split('/').pop()||'index.html';
+    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+      fetch(SB+'/rest/v1/visitor_logs',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
