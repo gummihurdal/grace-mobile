@@ -1,29 +1,42 @@
-name: Build iOS App
+name: Build Grace App (Android + iOS)
 
 on:
-  workflow_dispatch:  # Manual trigger
-  push:
-    branches: [main]
-    paths: ['capacitor.config.json', 'ios/**', 'www/**']
+  workflow_dispatch:
 
 jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - run: npm install
+      - run: npx cap add android
+      - run: npx cap sync android
+      - name: Build APK
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Grace-Android-APK
+          path: android/app/build/outputs/apk/release/app-release.apk
+
   build-ios:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Sync Capacitor
-        run: npx cap sync ios
-      
-      - name: Build iOS
+      - run: npm install
+      - run: npx cap add ios
+      - run: npx cap sync ios
+      - name: Build iOS Archive
         working-directory: ios/App
         run: |
           xcodebuild -workspace App.xcworkspace \
@@ -33,56 +46,12 @@ jobs:
             -sdk iphoneos \
             CODE_SIGNING_ALLOWED=NO \
             archive
-      
-      - name: Create unsigned IPA
+      - name: Create IPA
         run: |
           mkdir -p $RUNNER_TEMP/Payload
           cp -r $RUNNER_TEMP/Grace.xcarchive/Products/Applications/App.app $RUNNER_TEMP/Payload/
-          cd $RUNNER_TEMP
-          zip -r Grace.ipa Payload
-          
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
+          cd $RUNNER_TEMP && zip -r Grace.ipa Payload
+      - uses: actions/upload-artifact@v4
         with:
-          name: Grace-iOS
+          name: Grace-iOS-IPA
           path: ${{ runner.temp }}/Grace.ipa
-
-  build-android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Sync Capacitor
-        run: npx cap sync android
-      
-      - name: Build Android
-        working-directory: android
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease bundleRelease
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Grace-Android-APK
-          path: android/app/build/outputs/apk/release/app-release.apk
-      
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: Grace-Android-AAB
-          path: android/app/build/outputs/bundle/release/app-release.aab
