@@ -1,0 +1,27 @@
+{
+  "appId": "day.graceforevery.app",
+  "appName": "Grace",
+  "webDir": "www",
+  "server": {
+    "url": "https://graceforevery.day",
+    "cleartext": false
+  },
+  "android": {
+    "backgroundColor": "#0a0a0a",
+    "allowMixedContent": false,
+    "overScrollMode": "never"
+  },
+  "ios": {
+    "backgroundColor": "#0a0a0a",
+    "contentInset": "always",
+    "scrollEnabled": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0a0a0a",
+      "showSpinner": false
+    }
+  }
+}
