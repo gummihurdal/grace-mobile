@@ -6,6 +6,10 @@ on:
 jobs:
   build-ios:
     runs-on: macos-latest
+    env:
+      APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
     steps:
       - uses: actions/checkout@v4
 
@@ -23,51 +27,62 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync ios
 
-      - name: Setup Apple certificate
-        env:
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+      - name: Install Fastlane
         run: |
-          # Save the API key
+          gem install fastlane
+
+      - name: Setup App Store Connect API key
+        run: |
           mkdir -p ~/.appstoreconnect/private_keys
           echo "$APP_STORE_CONNECT_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+          mkdir -p ios/App/fastlane
+          cat > ios/App/fastlane/Fastfile << 'FAST'
+          default_platform(:ios)
+          platform :ios do
+            desc "Build and upload to App Store Connect"
+            lane :release do
+              setup_ci
+              app_store_connect_api_key(
+                key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+                issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+                key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8"),
+                in_house: false
+              )
+              match(
+                type: "appstore",
+                app_identifier: "day.graceforevery.app",
+                readonly: false,
+                git_url: "https://github.com/gummihurdal/grace-mobile.git",
+                git_branch: "certificates"
+              )
+              build_app(
+                workspace: "App.xcworkspace",
+                scheme: "App",
+                export_method: "app-store",
+                output_directory: "./build",
+                output_name: "Grace.ipa"
+              )
+              upload_to_app_store(
+                skip_metadata: true,
+                skip_screenshots: true,
+                precheck_include_in_app_purchases: false
+              )
+            end
+          end
+          FAST
 
-      - name: Install xcodes
-        run: |
-          brew install xcbeautify
-
-      - name: Build archive
+      - name: Build and upload with Fastlane
         working-directory: ios/App
         run: |
-          xcodebuild -workspace App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath $RUNNER_TEMP/Grace.xcarchive \
-            -destination 'generic/platform=iOS' \
-            CODE_SIGNING_ALLOWED=NO \
-            archive 2>&1 | xcbeautify
+          fastlane release
+        env:
+          MATCH_PASSWORD: "GraceForEveryDay2026"
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create unsigned IPA
-        run: |
-          mkdir -p $RUNNER_TEMP/Payload
-          cp -r $RUNNER_TEMP/Grace.xcarchive/Products/Applications/App.app $RUNNER_TEMP/Payload/
-          cd $RUNNER_TEMP
-          zip -r Grace-unsigned.ipa Payload
-
-      - name: Upload IPA artifact
+      - name: Upload IPA artifact (backup)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Grace-iOS-IPA
-          path: ${{ runner.temp }}/Grace-unsigned.ipa
-
-      - name: Upload to App Store Connect via altool
-        env:
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-        run: |
-          xcrun altool --upload-app \
-            -f $RUNNER_TEMP/Grace-unsigned.ipa \
-            -t ios \
-            --apiKey $APP_STORE_CONNECT_KEY_ID \
-            --apiIssuer $APP_STORE_CONNECT_ISSUER_ID || echo "Upload may require signed build — check artifacts"
+          path: ios/App/build/Grace.ipa
+          if-no-files-found: ignore
