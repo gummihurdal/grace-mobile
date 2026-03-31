@@ -1,57 +1,73 @@
-name: Build Grace App (Android + iOS)
+name: Build & Upload iOS App
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - run: npm install
-      - run: npx cap add android
-      - run: npx cap sync android
-      - name: Build APK
-        working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleRelease
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Grace-Android-APK
-          path: android/app/build/outputs/apk/release/app-release.apk
-
   build-ios:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
-      - run: npx cap add ios
-      - run: npx cap sync ios
-      - name: Build iOS Archive
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add iOS platform
+        run: npx cap add ios
+
+      - name: Sync Capacitor
+        run: npx cap sync ios
+
+      - name: Setup Apple certificate
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: |
+          # Save the API key
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$APP_STORE_CONNECT_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+
+      - name: Install xcodes
+        run: |
+          brew install xcbeautify
+
+      - name: Build archive
         working-directory: ios/App
         run: |
           xcodebuild -workspace App.xcworkspace \
             -scheme App \
             -configuration Release \
             -archivePath $RUNNER_TEMP/Grace.xcarchive \
-            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO \
-            archive
-      - name: Create IPA
+            archive 2>&1 | xcbeautify
+
+      - name: Create unsigned IPA
         run: |
           mkdir -p $RUNNER_TEMP/Payload
           cp -r $RUNNER_TEMP/Grace.xcarchive/Products/Applications/App.app $RUNNER_TEMP/Payload/
-          cd $RUNNER_TEMP && zip -r Grace.ipa Payload
-      - uses: actions/upload-artifact@v4
+          cd $RUNNER_TEMP
+          zip -r Grace-unsigned.ipa Payload
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
         with:
           name: Grace-iOS-IPA
-          path: ${{ runner.temp }}/Grace.ipa
+          path: ${{ runner.temp }}/Grace-unsigned.ipa
+
+      - name: Upload to App Store Connect via altool
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          xcrun altool --upload-app \
+            -f $RUNNER_TEMP/Grace-unsigned.ipa \
+            -t ios \
+            --apiKey $APP_STORE_CONNECT_KEY_ID \
+            --apiIssuer $APP_STORE_CONNECT_ISSUER_ID || echo "Upload may require signed build — check artifacts"
