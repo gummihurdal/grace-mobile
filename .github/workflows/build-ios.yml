@@ -43,15 +43,26 @@ jobs:
           default_platform(:ios)
           platform :ios do
             lane :release do
-              setup_ci
+              # Create a fresh keychain for CI
+              create_keychain(
+                name: "ci_keychain",
+                password: "ci_password",
+                default_keychain: true,
+                unlock: true,
+                timeout: 3600,
+                lock_when_sleeps: false
+              )
               api_key = app_store_connect_api_key(
                 key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
                 issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
                 key_filepath: File.expand_path("~/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8"),
                 in_house: false
               )
-              # Auto-create certificate and profile
-              cert(api_key: api_key)
+              cert(
+                api_key: api_key,
+                keychain_path: File.expand_path("~/Library/Keychains/ci_keychain-db"),
+                keychain_password: "ci_password"
+              )
               sigh(
                 api_key: api_key,
                 app_identifier: "day.graceforevery.app",
@@ -62,7 +73,8 @@ jobs:
                 path: "App.xcodeproj",
                 team_id: "XT323ZDS6N",
                 bundle_identifier: "day.graceforevery.app",
-                profile_name: lane_context[SharedValues::SIGH_NAME]
+                profile_name: lane_context[SharedValues::SIGH_NAME],
+                code_sign_identity: "iPhone Distribution"
               )
               build_app(
                 workspace: "App.xcworkspace",
