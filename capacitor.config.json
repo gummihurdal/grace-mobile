@@ -7,21 +7,10 @@
     "cleartext": false
   },
   "android": {
-    "backgroundColor": "#0a0a0a",
-    "allowMixedContent": false,
-    "overScrollMode": "never"
+    "backgroundColor": "#0a0a0a"
   },
   "ios": {
     "backgroundColor": "#0a0a0a",
-    "contentInset": "always",
-    "scrollEnabled": true
-  },
-  "plugins": {
-    "SplashScreen": {
-      "launchAutoHide": true,
-      "launchShowDuration": 2000,
-      "backgroundColor": "#0a0a0a",
-      "showSpinner": false
-    }
+    "contentInset": "always"
   }
 }
