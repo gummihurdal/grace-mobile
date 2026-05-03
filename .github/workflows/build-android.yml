@@ -6,7 +6,7 @@ on:
       track:
         description: 'Play Store track (internal | alpha | beta | production)'
         required: true
-        default: 'internal'
+        default: 'alpha'
 
 jobs:
   build-android:
@@ -31,6 +31,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Python (for version code bump)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Install dependencies
         run: npm install
 
@@ -39,6 +44,32 @@ jobs:
 
       - name: Generate icons and splash
         run: npx capacitor-assets generate --android
+
+      - name: Auto-increment version code from Play Console
+        run: |
+          pip install google-api-python-client google-auth --quiet
+          python3 - << 'PYEOF'
+          import json, os, re
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          PACKAGE = 'day.graceforevery.app'
+          info = json.loads(os.environ['GOOGLE_PLAY_SERVICE_ACCOUNT_JSON'])
+          creds = service_account.Credentials.from_service_account_info(
+              info, scopes=['https://www.googleapis.com/auth/androidpublisher'])
+          svc = build('androidpublisher', 'v3', credentials=creds, cache_discovery=False)
+          edit = svc.edits().insert(packageName=PACKAGE, body={}).execute()
+          tracks = svc.edits().tracks().list(packageName=PACKAGE, editId=edit['id']).execute()
+          max_v = 0
+          for t in tracks.get('tracks', []):
+              for r in t.get('releases', []):
+                  for vc in r.get('versionCodes', []) or []:
+                      max_v = max(max_v, int(vc))
+          new_v = max_v + 1
+          print(f"Highest version code on Play: {max_v}; using: {new_v}")
+          with open('android/app/build.gradle') as f: c = f.read()
+          c = re.sub(r'versionCode\s+\d+', f'versionCode {new_v}', c)
+          with open('android/app/build.gradle', 'w') as f: f.write(c)
+          PYEOF
 
       - name: Sync Capacitor
         run: npx cap sync android
