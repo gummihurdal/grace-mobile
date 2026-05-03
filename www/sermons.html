@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sermons — Journey with God</title>
+<meta name="description" content="Sermon recordings, message notes, and curated faith resources on Journey with God.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://graceforevery.day/sermons.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0E1628;--navy2:#131D35;--navy3:#1A2540;--navy4:#0A1020;
+  --gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--amber:#D4862A;
+  --border:rgba(201,164,58,0.15);--border2:rgba(201,164,58,0.08);
+  --text:#E2D0A8;--text-d:#A09070;--text-b:#F8EED4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sb{width:220px;min-width:220px;background:var(--navy);border-right:1px solid var(--border2);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:300;transition:transform .3s ease}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border2)}
+.sb-logo a{text-decoration:none;display:block}
+.sb-logo-text{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.sb-logo-sub{font-size:11px;color:var(--text-d);margin-top:3px;font-style:italic}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-link,.sb-btn{display:block;width:100%;padding:11px 24px;text-decoration:none;text-align:left;background:none;border:none;border-left:2px solid transparent;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-b);cursor:pointer;transition:all .2s;box-sizing:border-box;line-height:1.4}
+.sb-link:hover,.sb-btn:hover{color:var(--gold);border-left-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.sb-link.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.07)}
+.sb-sub{display:none}
+.sb-divider{height:1px;background:rgba(201,164,58,0.2);margin:8px 16px}
+.sb-foot{padding:20px 24px;border-top:1px solid var(--border2);margin-top:auto}
+.sb-foot-date{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px;color:var(--text-b);line-height:2.1;font-weight:500}
+
+/* ── MOBILE BAR ── */
+.mob-bar{display:none;position:fixed;top:0;left:0;right:0;height:52px;background:var(--navy);border-bottom:1px solid var(--border2);z-index:400;align-items:center;justify-content:space-between;padding:0 20px}
+.mob-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold);text-decoration:none}
+.mob-ham{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px}
+.mob-ham span{display:block;width:22px;height:2px;background:var(--gold-d)}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:290}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border2);background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.tb-title{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-b);letter-spacing:1px}
+.tb-count{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--text-d)}
+
+/* ── PAGE HERO ── */
+.page-hero{padding:48px 56px 40px;border-bottom:1px solid var(--border2);background:var(--navy);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:240px;height:240px;background:radial-gradient(circle,rgba(201,164,58,0.06) 0%,transparent 70%);pointer-events:none}
+.ph-eyebrow{font-family:'Cinzel',serif;font-size:8px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.ph-title{font-family:'Cinzel',serif;font-size:clamp(24px,3vw,36px);font-weight:600;color:var(--text-b);margin-bottom:12px}
+.ph-sub{font-size:clamp(15px,1.8vw,18px);font-style:italic;color:var(--text-d);font-weight:300;line-height:1.6;max-width:560px}
+.ph-rule{width:40px;height:1px;background:var(--gold-d);margin:20px 0 0;opacity:.6}
+
+/* ── BODY LAYOUT ── */
+.body{padding:40px 56px 80px;flex:1}
+.two-col{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start}
+
+/* ── SECTION LABELS ── */
+.section-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.section-lbl::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+/* ── SERMON CARD ── */
+.sermon-card{background:var(--navy);border:1px solid var(--border2);margin-bottom:16px;transition:border-color .25s,box-shadow .25s;animation:fadeUp .5s ease both}
+.sermon-card:hover{border-color:var(--border);box-shadow:0 4px 32px rgba(0,0,0,0.3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sc-header{padding:24px 28px 20px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.sc-meta{flex:1}
+.sc-series{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px}
+.sc-title{font-family:'Cinzel',serif;font-size:clamp(14px,1.8vw,17px);font-weight:600;color:var(--text-b);margin-bottom:8px;line-height:1.4}
+.sc-byline{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-d);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sc-byline span{display:flex;align-items:center;gap:4px}
+.sc-chevron{width:20px;height:20px;flex-shrink:0;transition:transform .3s;opacity:.4}
+.sermon-card.open .sc-chevron{transform:rotate(180deg);opacity:.7}
+.sc-player{padding:0 28px 24px;display:none}
+.sermon-card.open .sc-player{display:block}
+.sc-desc{font-size:clamp(14px,1.6vw,16px);line-height:1.85;color:var(--text);margin-bottom:18px;font-weight:300}
+.sc-scripture{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px;padding:12px 16px;border-left:2px solid var(--gold-d);background:rgba(201,164,58,0.03)}
+
+/* ── AUDIO PLAYER ── */
+.audio-wrap{background:var(--navy2);border:1px solid var(--border2);padding:16px 20px;margin-bottom:0}
+.audio-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);margin-bottom:10px}
+audio{width:100%;height:36px;outline:none;filter:sepia(20%) saturate(70%)}
+audio::-webkit-media-controls-panel{background:var(--navy3)}
+
+/* ── EMPTY / LOADING STATE ── */
+.feed-loading{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);padding:60px 0;text-align:center}
+.feed-empty{text-align:center;padding:60px 0}
+.feed-empty-icon{font-size:32px;margin-bottom:16px;opacity:.4}
+.feed-empty-t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--text-d);margin-bottom:8px}
+.feed-empty-s{font-size:15px;font-style:italic;color:var(--text-d);opacity:.7}
+
+/* ── SIDE PANEL ── */
+.side-panel{position:sticky;top:80px}
+.sp{background:var(--navy);border:1px solid var(--border2);padding:24px;margin-bottom:16px}
+.sp-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.sp-link{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border2);text-decoration:none;transition:all .2s;cursor:pointer}
+.sp-link:last-child{border-bottom:none;padding-bottom:0}
+.sp-link:hover .sp-link-title{color:var(--gold)}
+.sp-link-icon{font-size:14px;margin-top:2px;flex-shrink:0;opacity:.6}
+.sp-link-body{}
+.sp-link-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-b);display:block;margin-bottom:3px;transition:color .2s}
+.sp-link-desc{font-size:13px;font-style:italic;color:var(--text-d);line-height:1.5}
+.sp-link-cat{font-family:'Cinzel',serif;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);display:inline-block;margin-top:4px;padding:2px 6px;border:1px solid rgba(201,164,58,0.2)}
+
+/* Upload hint panel */
+.sp-upload{background:rgba(201,164,58,0.04);border:1px solid rgba(201,164,58,0.15);padding:20px 24px}
+.sp-upload-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:10px}
+.sp-upload-cmd{font-family:monospace;font-size:11px;color:var(--text-b);background:var(--navy4);padding:10px 12px;line-height:1.7;border-left:2px solid var(--gold-d);display:block;word-break:break-all}
+.sp-upload-note{font-size:12px;font-style:italic;color:var(--text-d);margin-top:8px;line-height:1.5}
+
+/* Tags */
+.sc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.sc-tag{font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--text-d);padding:3px 8px;border:1px solid var(--border2)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .mob-bar{display:flex}
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .mob-overlay.open{display:block}
+  .main{margin-left:0!important;padding-top:52px}
+  .topbar{padding:12px 16px;top:52px}
+  .two-col{grid-template-columns:1fr}
+  .side-panel{position:static}
+  .page-hero,.body{padding-left:16px!important;padding-right:16px!important}
+}
+@media(max-width:640px){
+  .page-hero{padding-top:32px;padding-bottom:28px}
+  .body{padding-top:24px;padding-bottom:60px}
+}
+</style>
+<script src="native.js" defer></script></head>
+<body>
+
+<!-- Mobile bar -->
+<div class="mob-bar">
+  <a class="mob-logo" href="index.html">Journey with God</a>
+  <button class="mob-ham" onclick="sbOpen()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="mob-overlay" id="mob-overlay" onclick="sbClose()"></div>
+
+<!-- Sidebar -->
+<aside class="sb" id="sidebar">
+  <div class="sb-logo">
+    <a href="index.html">
+      <div class="sb-logo-text">Journey with God</div>
+      <div class="sb-logo-sub">Daily Scripture &amp; Reflection</div>
+    </a>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-link" href="devotion.html">Daily Devotion</a>
+    <button class="sb-btn" id="study-btn" onclick="sbStudy()">Study Topics</button>
+    <div class="sb-sub" id="study-sub">
+      <a class="sb-link" href="learn.html?topic=christian-identity">Identity</a>
+      <a class="sb-link" href="learn.html?topic=the-cross">The Cross</a>
+      <a class="sb-link" href="learn.html?topic=discipleship">Discipleship</a>
+      <a class="sb-link" href="learn.html?topic=apologetics">Apologetics</a>
+      <a class="sb-link" href="learn.html?topic=prayer">Prayer</a>
+      <a class="sb-link" href="learn.html?topic=suffering">Suffering</a>
+      <a class="sb-link" href="learn.html?topic=holy-spirit">Holy Spirit</a>
+      <a class="sb-link" href="learn.html?topic=sin-and-grace">Sin &amp; Grace</a>
+      <a class="sb-link" href="learn.html?topic=the-church">The Church</a>
+      <a class="sb-link" href="learn.html?topic=eternity">Eternity</a>
+      <a class="sb-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
+    </div>
+    <div class="sb-divider"></div>
+    <a class="sb-link" href="calendar.html">Calendar</a>
+    <a class="sb-link" href="archive.html">Archive</a>
+    <a class="sb-link on" href="well.html">The Well</a>
+    <a class="sb-link" href="blog.html">Blog</a>
+    <a class="sb-link" href="contact.html">Contact</a>
+    <a class="sb-link" href="settings.html">Settings</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-foot-date" id="sb-date"></div></div>
+</aside>
+
+<!-- Main content -->
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title">Sermons</div>
+    <div class="tb-count" id="tb-count"></div>
+  </div>
+
+  <div class="page-hero">
+    <div class="ph-eyebrow">The Proclaimed Word</div>
+    <div class="ph-title">Sermons &amp; Messages</div>
+    <div class="ph-sub">Audio recordings of preached messages — to listen again, share with others, or encounter the Word for the first time.</div>
+    <div class="ph-rule"></div>
+  </div>
+
+  <div class="body">
+    <div class="two-col">
+
+      <!-- LEFT: Sermon list -->
+      <div>
+        <div class="section-lbl">Recordings</div>
+        <div id="sermon-list">
+          <div class="feed-loading">Loading sermons…</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Links + upload hint -->
+      <div class="side-panel">
+
+        <div class="sp">
+          <div class="sp-lbl">Resources &amp; Links</div>
+          <div id="links-list">
+            <!-- Populated from Supabase OR static fallback below -->
+          </div>
+        </div>
+
+        <div class="sp-upload">
+          <div class="sp-upload-lbl">Audio Prep (FFmpeg)</div>
+          <code class="sp-upload-cmd">ffmpeg -i sermon.mp3 -ac 1 -b:a 64k sermon_out.mp3</code>
+          <div class="sp-upload-note">Converts to mono 64 kbps — reduces a 60 MB file to ~7–8 MB with clear speech quality.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ── CONFIG ── */
+const SB_URL  = 'https://mjphpctvuxmbjhmcscoj.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qcGhwY3R2dXhtYmpobWNzY29qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMjgzMzQsImV4cCI6MjA4NzgwNDMzNH0.dsmzK7SS4_RSC5wbN6ifhjRlOSbfDZjIcfh2MKkDQIs';
+
+/* ── SIDEBAR ── */
+function sbOpen()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('mob-overlay').classList.add('open'); }
+function sbClose() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('mob-overlay').classList.remove('open'); }
+function sbStudy() {
+  const sub = document.getElementById('study-sub');
+  const btn = document.getElementById('study-btn');
+  const open = sub.style.display === 'block';
+  sub.style.display = open ? 'none' : 'block';
+  btn.style.color = open ? '' : 'var(--gold)';
+}
+
+/* ── DATE IN FOOTER ── */
+const d = new Date();
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+document.getElementById('sb-date').textContent = days[d.getDay()] + '\n' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+
+/* ── HELPER: Supabase fetch ── */
+async function sbFetch(path) {
+  const r = await fetch(SB_URL + path, {
+    headers: {
+      'apikey': SB_ANON,
+      'Authorization': 'Bearer ' + SB_ANON
+    }
+  });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+/* ── FORMAT SECONDS ── */
+function fmtDur(sec) {
+  if (!sec) return '';
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+
+/* ── FORMAT DATE ── */
+function fmtDate(str) {
+  if (!str) return '';
+  const dt = new Date(str + 'T12:00:00Z');
+  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+/* ── RENDER SERMONS ── */
+function renderSermon(s, idx) {
+  const dur   = s.duration_seconds ? `<span>⏱ ${fmtDur(s.duration_seconds)}</span>` : '';
+  const date  = s.preached_on      ? `<span>📅 ${fmtDate(s.preached_on)}</span>` : '';
+  const spkr  = s.speaker          ? `<span>🎙 ${s.speaker}</span>` : '';
+  const serie = s.series            ? `<div class="sc-series">${s.series}</div>` : '';
+  const desc  = s.description       ? `<div class="sc-desc">${s.description}</div>` : '';
+  const scrip = s.scripture         ? `<div class="sc-scripture">${s.scripture}</div>` : '';
+  const tags  = (s.tags && s.tags.length)
+    ? `<div class="sc-tags">${s.tags.map(t => `<span class="sc-tag">${t}</span>`).join('')}</div>` : '';
+
+  const player = s.audio_url
+    ? `<div class="audio-wrap">
+        <div class="audio-label">Listen</div>
+        <audio controls preload="none" src="${s.audio_url}"></audio>
+       </div>`
+    : `<div class="audio-wrap"><div class="audio-label" style="opacity:.4">Audio not yet available</div></div>`;
+
+  return `
+  <div class="sermon-card" id="sc-${idx}" style="animation-delay:${idx * 0.07}s">
+    <div class="sc-header" onclick="toggleCard(${idx})">
+      <div class="sc-meta">
+        ${serie}
+        <div class="sc-title">${s.title}</div>
+        <div class="sc-byline">${spkr}${date}${dur}</div>
+        ${tags}
+      </div>
+      <svg class="sc-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="5,8 10,13 15,8"/>
+      </svg>
+    </div>
+    <div class="sc-player">
+      ${scrip}
+      ${desc}
+      ${player}
+    </div>
+  </div>`;
+}
+
+function toggleCard(idx) {
+  const card = document.getElementById('sc-' + idx);
+  card.classList.toggle('open');
+}
+
+/* ── RENDER LINKS ── */
+function renderLinks(links) {
+  const el = document.getElementById('links-list');
+  if (!links || !links.length) {
+    el.innerHTML = '<div style="font-size:13px;font-style:italic;color:var(--text-d)">No links yet.</div>';
+    return;
+  }
+  el.innerHTML = links.map(l => `
+    <a class="sp-link" href="${l.url}" target="_blank" rel="noopener">
+      <span class="sp-link-icon">${l.icon || '🔗'}</span>
+      <div class="sp-link-body">
+        <span class="sp-link-title">${l.title}</span>
+        ${l.desc ? `<span class="sp-link-desc">${l.desc}</span>` : ''}
+        ${l.category ? `<span class="sp-link-cat">${l.category}</span>` : ''}
+      </div>
+    </a>`).join('');
+}
+
+/* ── LOAD DATA ── */
+async function load() {
+  // Links — load from Supabase sermon_links table
+  try {
+    const links = await sbFetch('/rest/v1/sermon_links?select=*&order=sort_order.asc');
+    renderLinks(links.map(l => ({...l, desc: l.description})));
+  } catch(e) {
+    console.warn('Links load failed:', e);
+  }
+
+  // Sermons
+  const listEl = document.getElementById('sermon-list');
+  // UX-hidden sermon IDs (DB + storage retained)
+  const HIDDEN_SERMON_IDS = ['4c9ee28f-bc80-41ff-a793-54a82fdada9b'];
+  try {
+    const raw = await sbFetch('/rest/v1/sermons?select=*&order=preached_on.desc.nullslast');
+    const sermons = (raw || []).filter(s => !HIDDEN_SERMON_IDS.includes(s.id));
+    if (!sermons || sermons.length === 0) {
+      listEl.innerHTML = `
+        <div class="feed-empty">
+          <div class="feed-empty-icon">🎙</div>
+          <div class="feed-empty-t">No sermons yet</div>
+          <div class="feed-empty-s">Upload an audio file to Supabase Storage and add the first entry.</div>
+        </div>`;
+      document.getElementById('tb-count').textContent = '';
+      return;
+    }
+    listEl.innerHTML = sermons.map((s, i) => renderSermon(s, i)).join('');
+    document.getElementById('tb-count').textContent = sermons.length + ' sermon' + (sermons.length !== 1 ? 's' : '');
+  } catch (e) {
+    // If Supabase not configured yet, show placeholder sermon
+    listEl.innerHTML = renderSermon({
+      title: 'Your First Sermon',
+      speaker: 'Your Name',
+      series: 'Series Name',
+      scripture: 'John 1:1 — "In the beginning was the Word…"',
+      description: 'Add sermons to the Supabase table and they will appear here automatically with the audio player.',
+      preached_on: new Date().toISOString().split('T')[0],
+      duration_seconds: null,
+      audio_url: null,
+      tags: ['sample']
+    }, 0);
+    document.getElementById('tb-count').textContent = 'Configure Supabase to load live';
+    console.warn('Supabase error or not configured:', e);
+  }
+}
+
+load();
+</script>
+</body>
+</html>

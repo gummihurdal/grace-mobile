@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey with God — Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0E1628;--navy2:#131D35;--navy3:#1A2540;--navy4:#0A1020;
+  --gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--amber:#D4862A;
+  --border:rgba(201,164,58,0.15);--border2:rgba(201,164,58,0.08);
+  --text:#E2D0A8;--text-d:#A09070;--text-b:#F8EED4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh;overflow-x:hidden}
+.sb{width:220px;min-width:220px;background:var(--navy);border-right:1px solid var(--border2);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:300;transition:transform .3s ease}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border2)}
+.sb-logo a{text-decoration:none;display:block}
+.sb-logo-text{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.sb-logo-sub{font-size:11px;color:var(--text-d);margin-top:3px;font-style:italic}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-link,.sb-btn{display:block;width:100%;padding:11px 24px;text-decoration:none;text-align:left;background:none;border:none;border-left:2px solid transparent;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-b);cursor:pointer;transition:all .2s;box-sizing:border-box;line-height:1.4}
+.sb-link:hover,.sb-btn:hover{color:var(--gold);border-left-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.sb-link.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.07)}
+.sb-sub{display:none}
+.sb-divider{height:1px;background:rgba(201,164,58,0.2);margin:8px 16px;}
+.sb-foot{padding:20px 24px;border-top:1px solid var(--border2);margin-top:auto}
+.sb-foot-date{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px;color:var(--text-b);line-height:2.1;font-weight:500}
+.mob-bar{display:none;position:fixed;top:0;left:0;right:0;height:52px;background:var(--navy);border-bottom:1px solid var(--border2);z-index:400;align-items:center;justify-content:space-between;padding:0 20px}
+.mob-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold);text-decoration:none}
+.mob-ham{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px}
+.mob-ham span{display:block;width:22px;height:2px;background:var(--gold-d)}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:290}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border2);background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.tb-title{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-b);letter-spacing:1px}
+.tb-count{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--text-d)}
+.page-hero{padding:48px 56px 40px;border-bottom:1px solid var(--border2);background:var(--navy)}
+.ph-eyebrow{font-family:'Cinzel',serif;font-size:8px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.ph-title{font-family:'Cinzel',serif;font-size:clamp(24px,3vw,36px);font-weight:600;color:var(--text-b);margin-bottom:12px}
+.ph-sub{font-size:clamp(15px,1.8vw,18px);font-style:italic;color:var(--text-d);font-weight:300;line-height:1.6;max-width:560px}
+.body{padding:40px 56px 80px;flex:1}
+.two-col{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+.form-block{background:var(--navy);border:1px solid var(--border2);padding:36px;margin-bottom:32px}
+.form-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-row.single{grid-template-columns:1fr}
+.field-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d);margin-bottom:6px}
+.field-input,.field-textarea{width:100%;background:var(--navy2);border:1px solid var(--border);color:var(--text-b);font-family:'Cormorant Garamond',serif;font-size:15px;padding:10px 14px;outline:none;transition:border-color .2s;resize:none}
+.field-input:focus,.field-textarea:focus{border-color:var(--gold-d)}
+.field-input::placeholder,.field-textarea::placeholder{color:var(--text-d);font-style:italic}
+.field-textarea{height:130px;line-height:1.6}
+.char-count{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--text-d);text-align:right;margin-top:4px}
+.submit-btn{display:block;width:100%;margin-top:20px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;padding:14px;cursor:pointer;transition:all .3s}
+.submit-btn:hover{background:var(--gold);color:var(--navy4)}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
+.form-err{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:#c0392b;margin-top:12px;display:none}
+.form-success{text-align:center;padding:32px;display:none}
+.form-success-icon{font-size:28px;margin-bottom:12px;color:var(--gold)}
+.form-success-t{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text-b);margin-bottom:8px}
+.form-success-s{font-size:15px;font-style:italic;color:var(--text-d);line-height:1.6}
+.form-success-back{display:inline-block;margin-top:20px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);cursor:pointer;border-bottom:1px solid var(--gold-d);padding-bottom:2px}
+.feed-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:20px}
+.comment-card{background:var(--navy);border:1px solid var(--border2);padding:24px 28px;margin-bottom:12px;transition:border-color .2s}
+.comment-card:hover{border-color:var(--border)}
+.cc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cc-author{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-b)}
+.cc-date{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text-d)}
+.cc-body{font-size:clamp(15px,1.6vw,17px);line-height:1.9;color:var(--text);font-weight:300}
+.cc-verse{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);margin-top:14px;padding-top:12px;border-top:1px solid var(--border2)}
+.feed-loading{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);padding:40px 0;text-align:center}
+.feed-empty{text-align:center;padding:48px 0}
+.feed-empty-t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--text-d);margin-bottom:8px}
+.feed-empty-s{font-size:14px;font-style:italic;color:var(--text-d);opacity:.7}
+.side-panel{position:sticky;top:80px}
+.sp{background:var(--navy);border:1px solid var(--border2);padding:24px;margin-bottom:16px}
+.sp-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.sp-verse{font-size:16px;font-style:italic;color:var(--text-b);line-height:1.75;margin-bottom:10px}
+.sp-ref{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--gold-d);text-transform:uppercase}
+.sp-stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border2)}
+.sp-stat:last-child{border-bottom:none;padding-bottom:0}
+.sp-stat-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d)}
+.sp-stat-val{font-family:'Cinzel',serif;font-size:12px;color:var(--text-b)}
+.sp-link{display:block;padding:10px 0;border-bottom:1px solid var(--border2);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C0A870;text-decoration:none;transition:color .2s}
+.sp-link:last-child{border-bottom:none}
+.sp-link:hover{color:var(--gold)}
+@media(max-width:860px){
+  .mob-bar{display:flex}
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .mob-overlay.open{display:block}
+  .main{margin-left:0!important;padding-top:52px}
+  .topbar{padding:12px 16px;top:52px}
+  .two-col{grid-template-columns:1fr}
+  .side-panel{position:static}
+  .page-hero,.body{padding-left:16px!important;padding-right:16px!important}
+}
+@media(max-width:640px){
+  .page-hero{padding-top:32px;padding-bottom:28px}
+  .body{padding-top:24px;padding-bottom:60px}
+  .form-row{grid-template-columns:1fr}
+  .form-block{padding:24px 20px}
+}
+
+
+/* ── BLOG WHITE WRITING AREA ── */
+body{background:#1e2a4a !important}
+.main{background:#1e2a4a !important}
+.topbar{background:rgba(20,28,58,0.97) !important}
+
+/* Form card - light */
+.cf-card{
+  background:#f5f0e8 !important;
+  border:1px solid rgba(201,164,58,0.3) !important;
+  border-radius:2px;
+}
+.cf-lbl{color:#5a4e38 !important;letter-spacing:3px}
+/* White input fields */
+.cf-input,.cf-textarea{
+  background:#ffffff !important;
+  border:1px solid #d4c5a0 !important;
+  color:#2a2010 !important;
+  border-radius:2px;
+}
+.cf-input::placeholder,.cf-textarea::placeholder{color:#b0a080 !important}
+.cf-input:focus,.cf-textarea:focus{
+  border-color:#C9A43A !important;
+  outline:none;
+  box-shadow:0 0 0 2px rgba(201,164,58,0.15) !important;
+}
+.cf-count{color:#8a7a60 !important}
+.cf-submit{
+  background:transparent !important;
+  border:1px solid #C9A43A !important;
+  color:#8a6e20 !important;
+}
+.cf-submit:hover{background:#C9A43A !important;color:#fff !important}
+
+/* Page header */
+.ph-eyebrow{color:rgba(201,164,58,0.9) !important}
+.ph-title{color:#f0e6cc !important}
+.ph-desc{color:#a89878 !important}
+
+/* Community feed cards */
+.feed-card{
+  background:#f5f0e8 !important;
+  border:1px solid #e0d0b0 !important;
+}
+.feed-name{color:#2a2010 !important;font-weight:600}
+.feed-time{color:#9a8a68 !important}
+.feed-body{color:#3a3020 !important;line-height:1.75}
+.feed-verse{
+  color:#8a6e20 !important;
+  border-left:2px solid #C9A43A !important;
+  padding-left:10px;
+}
+.feed-lbl{color:rgba(201,164,58,0.9) !important}
+
+/* Sidebar */
+.sp{background:#f5f0e8 !important;border:1px solid #e0d0b0 !important}
+.sp-lbl{color:#8a6e20 !important}
+.sp-verse{color:#2a2010 !important;font-style:italic}
+.sp-ref{color:#8a6e20 !important}
+.blog-stats{background:#f5f0e8 !important;border:1px solid #e0d0b0 !important}
+.bs-lbl{color:#9a8a68 !important}
+.bs-val{color:#2a2010 !important;font-weight:600}
+
+/* Section labels */
+.section-lbl,.cf-section-lbl{color:rgba(201,164,58,0.9) !important}
+
+
+/* ── BLOG CORRECT CLASS NAMES ── */
+.form-block{background:#f5f0e8 !important;border:1px solid rgba(201,164,58,0.3) !important}
+.field-input,.field-textarea{
+  background:#ffffff !important;
+  border:1px solid #d4c5a0 !important;
+  color:#2a2010 !important;
+}
+.field-input::placeholder,.field-textarea::placeholder{color:#b0a080 !important}
+.field-input:focus,.field-textarea:focus{border-color:#C9A43A !important;background:#fffdf7 !important}
+
+</style>
+<script src="native.js" defer></script></head>
+<body>
+
+<div class="mob-bar">
+  <a class="mob-logo" href="index.html">Journey with God</a>
+  <button class="mob-ham" onclick="sbOpen()" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mob-overlay" id="mob-overlay" onclick="sbClose()"></div>
+
+<aside class="sb" id="sidebar">
+  <div class="sb-logo">
+    <a href="index.html">
+      <div class="sb-logo-text">Journey with God</div>
+      <div class="sb-logo-sub">Daily Scripture &amp; Reflection</div>
+    </a>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-link" href="devotion.html">Daily Devotion</a>
+    <button class="sb-btn" id="study-btn" onclick="sbStudy()">Study Topics</button>
+    <div class="sb-sub" id="study-sub">
+      <a class="sb-link" href="learn.html?topic=christian-identity">Identity</a>
+      <a class="sb-link" href="learn.html?topic=the-cross">The Cross</a>
+      <a class="sb-link" href="learn.html?topic=discipleship">Discipleship</a>
+      <a class="sb-link" href="learn.html?topic=apologetics">Apologetics</a>
+      <a class="sb-link" href="learn.html?topic=prayer">Prayer</a>
+      <a class="sb-link" href="learn.html?topic=suffering">Suffering</a>
+      <a class="sb-link" href="learn.html?topic=holy-spirit">Holy Spirit</a>
+      <a class="sb-link" href="learn.html?topic=sin-and-grace">Sin &amp; Grace</a>
+      <a class="sb-link" href="learn.html?topic=the-church">The Church</a>
+      <a class="sb-link" href="learn.html?topic=eternity">Eternity</a>
+      <a class="sb-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
+    </div>
+    <div class="sb-divider"></div>
+    <a class="sb-link" href="calendar.html">Calendar</a>
+    <a class="sb-link" href="archive.html">Archive</a>
+    <a class="sb-link" href="well.html">The Well</a>
+    <a class="sb-link on" href="blog.html">Blog</a>
+    <a class="sb-link" href="contact.html">Contact</a>
+    <a class="sb-link" href="settings.html">Settings</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-foot-date" id="sb-date"></div></div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title">Blog</div>
+    <div class="tb-count" id="tb-count"></div>
+  </div>
+
+  <div class="page-hero">
+    <div class="ph-eyebrow">The Community</div>
+    <div class="ph-title">Share Your Reflection</div>
+    <div class="ph-sub">A space to share thoughts on today's devotion, personal insights, or what God has placed on your heart.</div>
+  </div>
+
+  <div class="body">
+    <div class="two-col">
+
+      <div>
+        <div class="form-block">
+          <div class="form-lbl">Leave a Reflection</div>
+          <div id="comment-form">
+            <div class="form-row">
+              <div>
+                <div class="field-lbl">Your Name</div>
+                <input class="field-input" id="cf-name" type="text" placeholder="How you'd like to be known" maxlength="60">
+              </div>
+              <div>
+                <div class="field-lbl">Scripture (optional)</div>
+                <input class="field-input" id="cf-verse" type="text" placeholder="e.g. John 3:16" maxlength="60">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div>
+                <div class="field-lbl">Your Reflection</div>
+                <textarea class="field-textarea" id="cf-body" placeholder="Share what's on your heart…" maxlength="800" oninput="updateCount()"></textarea>
+                <div class="char-count"><span id="cf-count">0</span> / 800</div>
+              </div>
+            </div>
+            <div class="form-err" id="cf-err"></div>
+            <button class="submit-btn" id="cf-submit" onclick="submitComment()">Post Reflection →</button>
+          </div>
+          <div class="form-success" id="comment-success">
+            <div class="form-success-icon">✦</div>
+            <div class="form-success-t">Reflection Posted</div>
+            <div class="form-success-s">Thank you for sharing. Your words are a gift to the community.</div>
+            <div class="form-success-back" onclick="resetForm()">Post another reflection</div>
+          </div>
+        </div>
+
+        <div class="feed-lbl">Community Reflections</div>
+        <div id="feed">
+          <div class="feed-loading">Loading reflections…</div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="sp">
+          <div class="sp-lbl">Today's Verse</div>
+          <div class="sp-verse" id="sp-verse">…</div>
+          <div class="sp-ref" id="sp-ref"></div>
+        </div>
+        <div class="sp">
+          <div class="sp-lbl">Blog</div>
+          <div class="sp-stat">
+            <span class="sp-stat-lbl">Total Reflections</span>
+            <span class="sp-stat-val" id="stat-count">—</span>
+          </div>
+          <div class="sp-stat">
+            <span class="sp-stat-lbl">Today</span>
+            <span class="sp-stat-val" id="stat-today">—</span>
+          </div>
+        </div>
+        <div class="sp">
+          <div class="sp-lbl">Explore</div>
+          <a class="sp-link" href="index.html">Today's Devotion</a>
+          <a class="sp-link" href="archive.html">Archive</a>
+          <a class="sp-link" href="calendar.html">Calendar</a>
+          <a class="sp-link" href="learn.html?topic=christian-identity">Study Topics</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+(function(){
+  const now=new Date();
+  const el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MONTHS[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+})();
+
+function updateCount(){
+  document.getElementById('cf-count').textContent=document.getElementById('cf-body').value.length;
+}
+
+function resetForm(){
+  document.getElementById('comment-form').style.display='block';
+  document.getElementById('comment-success').style.display='none';
+  document.getElementById('cf-name').value='';
+  document.getElementById('cf-body').value='';
+  document.getElementById('cf-verse').value='';
+  document.getElementById('cf-count').textContent='0';
+}
+
+async function submitComment(){
+  const name=document.getElementById('cf-name').value.trim();
+  const body=document.getElementById('cf-body').value.trim();
+  const verse=document.getElementById('cf-verse').value.trim();
+  const errEl=document.getElementById('cf-err');
+  const btn=document.getElementById('cf-submit');
+  errEl.style.display='none';
+  if(!name){errEl.textContent='Please enter your name.';errEl.style.display='block';return;}
+  if(!body||body.length<10){errEl.textContent='Please write a little more.';errEl.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Posting…';
+  try{
+    const r=await fetch(`${SB}/rest/v1/blog_submissions`,{
+      method:'POST',
+      headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({author_name:name,body:body,scripture_reference:verse||null,title:'Community Reflection',category:'community'})
+    });
+    if(r.ok||r.status===201){
+      document.getElementById('comment-form').style.display='none';
+      document.getElementById('comment-success').style.display='block';
+      loadFeed();
+    } else {
+      errEl.textContent='Could not post. Please try again.';
+      errEl.style.display='block';
+    }
+  }catch(e){
+    errEl.textContent='Network error. Please check your connection.';
+    errEl.style.display='block';
+  }
+  btn.disabled=false;btn.textContent='Post Reflection →';
+}
+
+function relDate(str){
+  const d=new Date(str),now=new Date(),diff=Math.floor((now-d)/1000);
+  if(diff<60) return 'Just now';
+  if(diff<3600) return Math.floor(diff/60)+'m ago';
+  if(diff<86400) return Math.floor(diff/3600)+'h ago';
+  if(diff<604800) return Math.floor(diff/86400)+'d ago';
+  return MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function loadFeed(){
+  const feedEl=document.getElementById('feed');
+  try{
+    const r=await fetch(`${SB}/rest/v1/blog_submissions?category=eq.community&select=author_name,body,scripture_reference,created_at&order=created_at.desc&limit=100`,{
+      headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}
+    });
+    const comments=await r.json();
+    if(!Array.isArray(comments)) throw new Error();
+    const total=comments.length;
+    const todayCount=comments.filter(c=>{
+      const d=new Date(c.created_at),n=new Date();
+      return d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate();
+    }).length;
+    document.getElementById('stat-count').textContent=total;
+    document.getElementById('stat-today').textContent=todayCount;
+    document.getElementById('tb-count').textContent=total+' Reflection'+(total!==1?'s':'');
+    if(total===0){
+      feedEl.innerHTML='<div class="feed-empty"><div class="feed-empty-t">Be the first to share</div><div class="feed-empty-s">Your reflection could encourage someone today.</div></div>';
+      return;
+    }
+    feedEl.innerHTML=comments.map(c=>`
+      <div class="comment-card">
+        <div class="cc-header">
+          <div class="cc-author">${escHtml(c.author_name||'Anonymous')}</div>
+          <div class="cc-date">${relDate(c.created_at)}</div>
+        </div>
+        <div class="cc-body">${escHtml(c.body)}</div>
+        ${c.scripture_reference?`<div class="cc-verse">${escHtml(c.scripture_reference)}</div>`:''}
+      </div>`).join('');
+  }catch(e){
+    feedEl.innerHTML='<div class="feed-empty"><div class="feed-empty-s">Could not load reflections.</div></div>';
+  }
+}
+
+async function loadTodayVerse(){
+  const now=new Date();
+  const mm=String(now.getMonth()+1).padStart(2,'0'),dd=String(now.getDate()).padStart(2,'0');
+  try{
+    const r=await fetch(`${SB}/rest/v1/devotionals?month_day=eq.${mm}-${dd}&select=scripture_text,scripture_reference&limit=1`,{
+      headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}
+    });
+    const rows=await r.json();
+    if(rows?.length){
+      document.getElementById('sp-verse').textContent='\u201c'+rows[0].scripture_text+'\u201d';
+      document.getElementById('sp-ref').textContent='\u2014 '+rows[0].scripture_reference;
+    }
+  }catch(e){}
+}
+
+var _so=false;
+function sbStudy(){
+  _so=!_so;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display=_so?'block':'none';
+  if(b){b.style.color=_so?'var(--gold)':'';b.style.borderLeftColor=_so?'var(--gold-d)':'';b.style.background=_so?'rgba(201,164,58,0.04)':'';}
+}
+function sbStudyExpand(){
+  _so=true;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display='block';
+  if(b){b.style.color='var(--gold)';b.style.borderLeftColor='var(--gold-d)';b.style.background='rgba(201,164,58,0.04)';}
+}
+function sbOpen(){document.getElementById('sidebar').classList.add('open');document.getElementById('mob-overlay').classList.add('open')}
+function sbClose(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mob-overlay').classList.remove('open')}
+
+loadFeed();
+loadTodayVerse();
+</script>
+<script>
+(function(){
+  try{
+    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+    const page=window.location.pathname.split('/').pop()||'index.html';
+    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+      fetch(SB+'/rest/v1/visitor_logs',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

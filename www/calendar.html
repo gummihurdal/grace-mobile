@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey with God — Calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;
+  display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sb{
+  width:220px;min-width:220px;background:var(--navy);
+  border-right:1px solid var(--border2);
+  position:fixed;top:0;left:0;height:100vh;
+  display:flex;flex-direction:column;z-index:300;
+  transition:transform .3s ease;
+}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border2)}
+.sb-logo a{text-decoration:none;display:block}
+.sb-logo-text{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.sb-logo-sub{font-size:11px;color:var(--text-d);margin-top:3px;font-style:italic}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-link,.sb-btn{
+  display:block;width:100%;padding:11px 24px;
+  text-decoration:none;text-align:left;background:none;
+  border:none;border-left:2px solid transparent;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--text-b);
+  cursor:pointer;transition:all .2s;box-sizing:border-box;
+  line-height:1.4;
+}
+.sb-link:hover,.sb-btn:hover{color:var(--gold);border-left-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.sb-link.on,.sb-btn.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.07)}
+.sb-sub{display:none}
+.sb-divider{height:1px;background:rgba(201,164,58,0.2);margin:8px 16px;}
+.sb-foot{padding:20px 24px;border-top:1px solid var(--border2);margin-top:auto}
+.sb-foot-date{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px;color:var(--text-b);line-height:2.1;font-weight:500}
+
+/* ── MOBILE BAR ── */
+.mob-bar{
+  display:none;position:fixed;top:0;left:0;right:0;height:52px;
+  background:var(--navy);border-bottom:1px solid var(--border2);
+  z-index:400;align-items:center;justify-content:space-between;padding:0 20px;
+}
+.mob-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;
+  letter-spacing:2px;color:var(--gold);text-decoration:none}
+.mob-ham{background:none;border:none;cursor:pointer;
+  padding:8px;display:flex;flex-direction:column;gap:5px}
+.mob-ham span{display:block;width:22px;height:2px;background:var(--gold-d)}
+.mob-overlay{display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:290}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;border-bottom:1px solid var(--border2);
+  background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px);
+}
+.tb-greeting{font-family:'Cinzel',serif;font-size:13px;font-weight:500;color:var(--text-b);letter-spacing:1px}
+.tb-date{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-b);opacity:.9}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .mob-bar{display:flex}
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .mob-overlay.open{display:block}
+  .main{margin-left:0!important;padding-top:52px}
+  .topbar{padding:12px 16px}
+  .body,.hero{padding-left:16px!important;padding-right:16px!important}
+  .two-col{grid-template-columns:1fr!important}
+  .cards-row{grid-template-columns:1fr!important}
+}
+
+:root{--navy:#0E1628;--navy2:#131D35;--navy4:#0A1020;--gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--border:rgba(201,164,58,0.15);--border2:rgba(201,164,58,0.08);--text:#E2D0A8;--text-d:#A09070;--text-b:#F8EED4;--sb-w:220px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+
+.main{margin-left:var(--sb-w);flex:1;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border2);background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.tb-title{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-b);letter-spacing:1px}
+.tb-sub{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-b);opacity:0.9}
+
+.body{padding:32px 40px 80px;flex:1}
+
+/* Nav row */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.cal-month{font-family:'Cinzel',serif;font-size:clamp(18px,2.5vw,24px);font-weight:600;color:var(--text-b)}
+.cal-btn-row{display:flex;gap:8px}
+.cal-btn{background:none;border:1px solid var(--border);color:var(--text-d);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:8px 20px;cursor:pointer;transition:all 0.2s}
+.cal-btn:hover{border-color:var(--gold);color:var(--gold)}
+.cal-today{background:rgba(201,164,58,0.1);border-color:var(--gold-d);color:var(--gold-d)}
+
+/* Grid */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border2)}
+.cal-head{background:var(--navy);padding:10px 4px;text-align:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d)}
+.cal-cell{
+  background:var(--navy);min-height:120px;padding:10px;
+  position:relative;cursor:default;transition:background 0.2s;
+.cal-cell.has-devo{cursor:pointer}
+.cal-cell.has-devo:hover{background:var(--navy2)}
+.cal-cell.today{background:var(--navy2)}
+.cal-cell.today::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)}
+.cal-cell.other-month{opacity:0.25}
+.cal-num{font-family:'Cinzel',serif;font-size:11px;color:var(--text-d);margin-bottom:8px}
+.cal-cell.today .cal-num{color:var(--gold);font-weight:600}
+.cal-pill{
+  background:rgba(201,164,58,0.08);border:1px solid var(--border2);border-left:2px solid var(--gold-d);
+  padding:5px 8px;margin-bottom:5px;font-size:11px;line-height:1.35;color:var(--text-d);
+  overflow:hidden;transition:all 0.2s;
+.cal-cell.has-devo:hover .cal-pill{background:rgba(201,164,58,0.12);color:var(--text-b);border-left-color:var(--gold)}
+.cal-pill-ref{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-d);margin-bottom:2px}
+.cal-pill-theme{font-size:11px;font-style:italic;color:var(--text-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Drawer */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px)}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;right:0;top:0;height:100vh;width:420px;background:var(--navy);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);overflow-y:auto;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer-head{padding:28px 28px 22px;border-bottom:1px solid var(--border2);display:flex;align-items:flex-start;justify-content:space-between}
+.dr-date{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px}
+.dr-theme{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--text-b);line-height:1.3}
+.dr-close{background:none;border:none;color:var(--text-d);font-size:20px;cursor:pointer;padding:4px;line-height:1;transition:color 0.2s}
+.dr-close:hover{color:var(--text-b)}
+.drawer-body{padding:24px 28px;flex:1}
+.dr-sc{background:var(--navy2);border:1px solid var(--border2);border-left:2px solid var(--gold-d);padding:16px 20px;margin-bottom:20px}
+.dr-sc-ref{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px}
+.dr-sc-t{font-size:16px;font-style:italic;font-weight:300;color:var(--text-b);line-height:1.75}
+.dr-q{font-size:17px;font-style:italic;color:var(--text);line-height:1.9;margin-bottom:16px;border-left:2px solid var(--gold-d);padding-left:18px}
+.dr-q-by{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d);margin-bottom:20px;padding-left:20px}
+.dr-med p{font-size:16px;line-height:1.9;color:var(--text);margin-bottom:14px}
+.dr-open{display:block;width:100%;margin-top:20px;background:none;border:1px solid var(--gold-d);color:var(--gold-d);font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:12px;cursor:pointer;text-decoration:none;text-align:center;transition:all 0.25s}
+.dr-open:hover{background:var(--gold-d);color:var(--navy4)}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:640px){.topbar{padding:16px 20px}.body{padding:20px 16px 60px}}
+
+
+/* All nav items — identical font/size/padding */
+
+
+  
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0 !important;padding-top:52px}
+}
+
+
+/* All nav items — same font / padding / left-border */
+
+
+  .main{margin-left:0 !important;padding-top:52px}
+  .topbar{top:52px}
+}
+
+
+/* ══ SIDEBAR ══════════════════════════════════════════════════════════════ */
+
+/* ══ MOBILE ════════════════════════════════════════════════════════════════ */
+@media(max-width:860px){
+  .sb.open{transform:translateX(0);z-index:350}
+  .main{margin-left:0 !important;padding-top:52px}
+}
+</style>
+<script src="native.js" defer></script></head>
+<body>
+<div class="mob-bar">
+  <a class="mob-logo" href="index.html">Journey with God</a>
+  <button class="mob-ham" onclick="sbOpen()" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mob-overlay" id="mob-overlay" onclick="sbClose()"></div>
+<aside class="sb" id="sidebar">
+  <div class="sb-logo">
+    <a href="index.html">
+      <div class="sb-logo-text">Journey with God</div>
+      <div class="sb-logo-sub">Daily Scripture &amp; Reflection</div>
+    </a>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-link" href="devotion.html">Daily Devotion</a>
+    <button class="sb-btn" id="study-btn" onclick="sbStudy()">Study Topics</button>
+    <div class="sb-sub" id="study-sub">
+      <a class="sb-link" href="learn.html?topic=christian-identity">Identity</a>
+      <a class="sb-link" href="learn.html?topic=the-cross">The Cross</a>
+      <a class="sb-link" href="learn.html?topic=discipleship">Discipleship</a>
+      <a class="sb-link" href="learn.html?topic=apologetics">Apologetics</a>
+      <a class="sb-link" href="learn.html?topic=prayer">Prayer</a>
+      <a class="sb-link" href="learn.html?topic=suffering">Suffering</a>
+      <a class="sb-link" href="learn.html?topic=holy-spirit">Holy Spirit</a>
+      <a class="sb-link" href="learn.html?topic=sin-and-grace">Sin &amp; Grace</a>
+      <a class="sb-link" href="learn.html?topic=the-church">The Church</a>
+      <a class="sb-link" href="learn.html?topic=eternity">Eternity</a>
+      <a class="sb-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
+    </div>
+    <div class="sb-divider"></div>
+    <a class="sb-link on" href="calendar.html">Calendar</a>
+    <a class="sb-link" href="archive.html">Archive</a>
+    <a class="sb-link" href="well.html">The Well</a>
+    <a class="sb-link" href="blog.html">Blog</a>
+    <a class="sb-link" href="contact.html">Contact</a>
+    <a class="sb-link" href="settings.html">Settings</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-foot-date" id="sb-date"></div></div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title">Devotional Calendar</div>
+    <div class="tb-sub" id="tb-sub"></div>
+  </div>
+  <div class="body">
+    <div class="cal-nav">
+      <div class="cal-month" id="cal-month"></div>
+      <div class="cal-btn-row">
+        <button class="cal-btn" onclick="changeMonth(-1)">← Prev</button>
+        <button class="cal-btn cal-today" onclick="goToday()">Today</button>
+        <button class="cal-btn" onclick="changeMonth(1)">Next →</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+</main>
+<div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div>
+      <div class="dr-date" id="dr-date"></div>
+      <div class="dr-theme" id="dr-theme"></div>
+    </div>
+    <button class="dr-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+<script>
+const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const now=new Date();
+let viewYear=now.getFullYear(),viewMonth=now.getMonth();
+let cache={};
+
+document.getElementById('sb-date').innerHTML=`${MONTHS[now.getMonth()]}<br>${now.getDate()}<br>${now.getFullYear()}`;
+document.getElementById('tb-sub').textContent=`${now.getFullYear()}`;
+
+async function fetchMonth(year,month){
+  const key=`${year}-${month}`;
+  if(cache[key])return cache[key];
+  const mm=String(month+1).padStart(2,'0');
+  const rows=[];
+  // fetch all days in month
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const promises=[];
+  for(let d=1;d<=daysInMonth;d++){
+    const dd=String(d).padStart(2,'0');
+    promises.push(fetch(`${SB}/rest/v1/devotionals?month_day=eq.${mm}-${dd}&select=theme,scripture_reference,quote_text,quote_author,meditation,prayer,call_to_action`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}}).then(r=>r.json()).then(data=>{if(data?.length)rows.push({day:d,...data[0]})}));
+  }
+  await Promise.all(promises);
+  cache[key]=rows;
+  return rows;
+}
+
+async function render(){
+  document.getElementById('cal-month').textContent=`${MONTHS[viewMonth]} ${viewYear}`;
+  document.getElementById('tb-sub').textContent=`${MONTHS[viewMonth]} ${viewYear}`;
+  const rows=await fetchMonth(viewYear,viewMonth);
+  const byDay={};
+  rows.forEach(r=>byDay[r.day]=r);
+  const first=new Date(viewYear,viewMonth,1).getDay();
+  const total=new Date(viewYear,viewMonth+1,0).getDate();
+  const prevTotal=new Date(viewYear,viewMonth,0).getDate();
+  let html=DAYS.map(d=>`<div class="cal-head">${d}</div>`).join('');
+  // Prev month padding
+  for(let i=0;i<first;i++){const d=prevTotal-first+i+1;html+=`<div class="cal-cell other-month"><div class="cal-num">${d}</div></div>`}
+  // Current month
+  for(let d=1;d<=total;d++){
+    const isToday=d===now.getDate()&&viewMonth===now.getMonth()&&viewYear===now.getFullYear();
+    const devo=byDay[d];
+    const cls=['cal-cell',isToday?'today':'',devo?'has-devo':''].filter(Boolean).join(' ');
+    const pill=devo?`<div class="cal-pill"><div class="cal-pill-ref">${devo.scripture_reference?.split(' ').slice(0,3).join(' ')}</div><div class="cal-pill-theme">${devo.theme||''}</div></div>`:'';
+    html+=`<div class="${cls}"${devo?` onclick="openDrawer(${d})"`:''} data-day="${d}"><div class="cal-num">${d}</div>${pill}</div>`;
+  }
+  // Next month padding
+  const cells=first+total;const rem=(7-cells%7)%7;
+  for(let i=1;i<=rem;i++)html+=`<div class="cal-cell other-month"><div class="cal-num">${i}</div></div>`;
+  document.getElementById('cal-grid').innerHTML=html;
+}
+
+function openDrawer(day){
+  const devo=cache[`${viewYear}-${viewMonth}`]?.find(r=>r.day===day);
+  if(!devo)return;
+  const mm=String(viewMonth+1).padStart(2,'0'),dd=String(day).padStart(2,'0');
+  document.getElementById('dr-date').textContent=`${MONTHS[viewMonth]} ${day}, ${viewYear}`;
+  document.getElementById('dr-theme').textContent=devo.theme||'';
+  const paras=(devo.meditation||'').split(/\n\n|\n/).filter(p=>p.trim()).slice(0,2).map(p=>`<p>${p.trim()}</p>`).join('');
+  document.getElementById('drawer-body').innerHTML=`
+    <div class="dr-sc"><div class="dr-sc-ref">${devo.scripture_reference||''}</div></div>
+    <div class="dr-q">"${devo.quote_text||''}"</div>
+    <div class="dr-q-by">— ${devo.quote_author||''}</div>
+    <div class="dr-med">${paras}</div>
+    <a class="dr-open" href="index.html?date=${mm}-${dd}">Open Full Devotional →</a>`;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+function changeMonth(d){viewMonth+=d;if(viewMonth>11){viewMonth=0;viewYear++}if(viewMonth<0){viewMonth=11;viewYear--}render()}
+function goToday(){viewYear=now.getFullYear();viewMonth=now.getMonth();render()}
+render();
+
+
+/* ── sidebar ── */
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  // auto-expand study if on learn page
+})();
+
+
+/* ── Sidebar ── */
+
+
+/* ── Sidebar JS ── */
+var _so=false;
+function sbStudy(){
+  _so=!_so;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display=_so?'block':'none';
+  if(b){b.style.color=_so?'var(--gold)':'';b.style.borderLeftColor=_so?'var(--gold-d)':'';b.style.background=_so?'rgba(201,164,58,0.04)':'';}
+}
+function sbStudyExpand(){
+  _so=true;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display='block';
+  if(b){b.style.color='var(--gold)';b.style.borderLeftColor='var(--gold-d)';b.style.background='rgba(201,164,58,0.04)';}
+}
+function sbOpen(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+}
+function sbClose(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+}
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  if(window.location.pathname.indexOf('learn.html')!==-1) sbStudyExpand();
+})();
+
+</script>
+<script>
+(function(){
+  try{
+    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+    const page=window.location.pathname.split('/').pop()||'index.html';
+    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+      fetch(SB+'/rest/v1/visitor_logs',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

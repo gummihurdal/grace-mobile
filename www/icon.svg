@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0E1628"/>
+      <stop offset="50%" style="stop-color:#131D35"/>
+      <stop offset="100%" style="stop-color:#0A1020"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0BC5A"/>
+      <stop offset="50%" style="stop-color:#C9A43A"/>
+      <stop offset="100%" style="stop-color:#8A6E20"/>
+    </linearGradient>
+    <linearGradient id="goldLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0BC5A;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#C9A43A;stop-opacity:0.7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="innerShadow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feOffset dx="0" dy="2"/>
+      <feComposite in2="SourceGraphic" operator="arithmetic" k2="-1" k3="1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="512" fill="url(#bg)"/>
+  
+  <!-- Outer gold ring -->
+  <circle cx="512" cy="512" r="470" fill="none" stroke="url(#gold)" stroke-width="3" opacity="0.4"/>
+  <circle cx="512" cy="512" r="450" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.25"/>
+  
+  <!-- Inner decorative ring with dots (like a rosary/chapel ceiling) -->
+  <circle cx="512" cy="512" r="420" fill="none" stroke="url(#gold)" stroke-width="0.8" opacity="0.15"/>
+  
+  <!-- 12 small dots around the ring (hours of prayer) -->
+  <g fill="url(#gold)" opacity="0.35">
+    <circle cx="512" cy="92" r="5"/>
+    <circle cx="722" cy="152" r="4"/>
+    <circle cx="872" cy="302" r="4"/>
+    <circle cx="932" cy="512" r="5"/>
+    <circle cx="872" cy="722" r="4"/>
+    <circle cx="722" cy="872" r="4"/>
+    <circle cx="512" cy="932" r="5"/>
+    <circle cx="302" cy="872" r="4"/>
+    <circle cx="152" cy="722" r="4"/>
+    <circle cx="92" cy="512" r="5"/>
+    <circle cx="152" cy="302" r="4"/>
+    <circle cx="302" cy="152" r="4"/>
+  </g>
+  
+  <!-- Cross — elegant thin lines, centered -->
+  <g filter="url(#glow)">
+    <!-- Vertical beam -->
+    <rect x="497" y="220" width="30" height="584" rx="15" fill="url(#gold)"/>
+    <!-- Horizontal beam -->
+    <rect x="340" y="368" width="344" height="30" rx="15" fill="url(#gold)"/>
+  </g>
+  
+  <!-- Small radiance lines from center of cross -->
+  <g stroke="url(#goldLight)" stroke-width="1.2" opacity="0.3">
+    <line x1="512" y1="330" x2="440" y2="260"/>
+    <line x1="512" y1="330" x2="584" y2="260"/>
+    <line x1="512" y1="330" x2="420" y2="310"/>
+    <line x1="512" y1="330" x2="604" y2="310"/>
+  </g>
+  
+  <!-- "G" letter at bottom — subtle, for brand recognition -->
+  <text x="512" y="870" text-anchor="middle" font-family="serif" font-size="48" 
+        fill="url(#gold)" opacity="0.35" letter-spacing="8">GRACE</text>
+</svg>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey with God — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;
+  display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sb{
+  width:220px;min-width:220px;background:var(--navy);
+  border-right:1px solid var(--border2);
+  position:fixed;top:0;left:0;height:100vh;
+  display:flex;flex-direction:column;z-index:300;
+  transition:transform .3s ease;
+}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border2)}
+.sb-logo a{text-decoration:none;display:block}
+.sb-logo-text{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.sb-logo-sub{font-size:11px;color:var(--text-d);margin-top:3px;font-style:italic}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-link,.sb-btn{
+  display:block;width:100%;padding:11px 24px;
+  text-decoration:none;text-align:left;background:none;
+  border:none;border-left:2px solid transparent;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--text-b);
+  cursor:pointer;transition:all .2s;box-sizing:border-box;
+  line-height:1.4;
+}
+.sb-link:hover,.sb-btn:hover{color:var(--gold);border-left-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.sb-link.on,.sb-btn.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.07)}
+.sb-sub{display:none}
+.sb-divider{height:1px;background:rgba(201,164,58,0.2);margin:8px 16px;}
+.sb-foot{padding:20px 24px;border-top:1px solid var(--border2);margin-top:auto}
+.sb-foot-date{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px;color:var(--text-b);line-height:2.1;font-weight:500}
+
+/* ── MOBILE BAR ── */
+.mob-bar{
+  display:none;position:fixed;top:0;left:0;right:0;height:52px;
+  background:var(--navy);border-bottom:1px solid var(--border2);
+  z-index:400;align-items:center;justify-content:space-between;padding:0 20px;
+}
+.mob-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;
+  letter-spacing:2px;color:var(--gold);text-decoration:none}
+.mob-ham{background:none;border:none;cursor:pointer;
+  padding:8px;display:flex;flex-direction:column;gap:5px}
+.mob-ham span{display:block;width:22px;height:2px;background:var(--gold-d)}
+.mob-overlay{display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:290}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;border-bottom:1px solid var(--border2);
+  background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px);
+}
+.tb-greeting{font-family:'Cinzel',serif;font-size:13px;font-weight:500;color:var(--text-b);letter-spacing:1px}
+.tb-date{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-b);opacity:.9}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .mob-bar{display:flex}
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .mob-overlay.open{display:block}
+  .main{margin-left:0!important;padding-top:52px}
+  .topbar{padding:12px 16px}
+  .body,.hero{padding-left:16px!important;padding-right:16px!important}
+  .two-col{grid-template-columns:1fr!important}
+  .cards-row{grid-template-columns:1fr!important}
+}
+
+:root{--navy:#0E1628;--navy2:#131D35;--navy4:#0A1020;--gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--border:rgba(201,164,58,0.15);--border2:rgba(201,164,58,0.08);--text:#E2D0A8;--text-d:#A09070;--text-b:#F8EED4;--sb-w:220px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+
+.main{margin-left:var(--sb-w);flex:1;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border2);background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.tb-title{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-b);letter-spacing:1px}
+.tb-sub{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-b);opacity:0.9}
+
+.body{padding:32px 48px 80px;flex:1}
+.two-col{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+
+/* Section */
+.sec{background:var(--navy);border:1px solid var(--border2);padding:28px 28px;margin-bottom:16px}
+.sec-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border2)}
+
+/* Profile */
+.profile-row{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.avatar{width:52px;height:52px;background:linear-gradient(135deg,var(--gold-d),var(--navy2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:18px;color:var(--gold-l);border:1px solid var(--border);flex-shrink:0;position:relative;cursor:pointer}
+.avatar-edit{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;background:var(--navy2);border:1px solid var(--gold-d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold-d)}
+.profile-name{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:var(--text-b)}
+.profile-role{font-size:13px;font-style:italic;color:var(--text-d);margin-top:2px}
+.profile-edit-btn{margin-left:auto;background:none;border:1px solid var(--border2);color:var(--text-d);font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:7px 16px;cursor:pointer;transition:all 0.2s}
+.profile-edit-btn:hover{border-color:var(--gold-d);color:var(--gold-d)}
+
+/* Fields */
+.field-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--border2)}
+.field-row:last-child{border-bottom:none;padding-bottom:0}
+.field-icon{width:32px;height:32px;background:rgba(201,164,58,0.07);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.field-info{flex:1}
+.field-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d);margin-bottom:3px}
+.field-val{font-size:15px;color:var(--text-b)}
+.field-action{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);cursor:pointer;transition:color 0.2s;white-space:nowrap}
+.field-action:hover{color:var(--gold)}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--border2)}
+.toggle-row:last-child{border-bottom:none;padding-bottom:0}
+.toggle-info{flex:1}
+.toggle-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-b);margin-bottom:3px}
+.toggle-sub{font-size:13px;color:var(--text-d)}
+.toggle{width:40px;height:22px;background:var(--border2);border-radius:11px;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0}
+.toggle.on{background:var(--gold-d)}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left 0.25s}
+.toggle.on::after{left:21px}
+
+/* Slider */
+.slider-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border2)}
+.slider-row:last-child{border-bottom:none;padding-bottom:0}
+.slider-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text-d);margin-bottom:4px}
+.slider-info{flex:1}
+.slider-val{font-size:13px;color:var(--text-b)}
+input[type=range]{-webkit-appearance:none;width:110px;height:3px;background:var(--border2);outline:none;border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--gold-d);border-radius:50%;cursor:pointer;transition:background 0.2s}
+input[type=range]::-webkit-slider-thumb:hover{background:var(--gold)}
+
+/* Danger zone */
+.danger-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border2)}
+.danger-row:last-child{border-bottom:none;padding-bottom:0}
+.danger-lbl{font-size:15px;color:var(--text-b)}
+.danger-sub{font-size:13px;color:var(--text-d);margin-top:2px}
+.btn-d{background:none;border:1px solid rgba(180,50,50,0.3);color:#c05050;font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:8px 18px;cursor:pointer;transition:all 0.2s}
+.btn-d:hover{background:rgba(180,50,50,0.1);border-color:#c05050}
+
+/* Plan panel */
+.plan{background:var(--navy);border:1px solid var(--border2);padding:24px;margin-bottom:16px}
+.plan-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:14px}
+.plan-name{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:var(--text-b);margin-bottom:8px}
+.plan-desc{font-size:14px;color:var(--text-d);line-height:1.7;margin-bottom:16px}
+.plan-btn{display:block;text-align:center;background:rgba(201,164,58,0.1);border:1px solid var(--gold-d);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:12px;text-decoration:none;transition:all 0.25s;cursor:pointer;width:100%}
+.plan-btn:hover{background:var(--gold-d);color:var(--navy4)}
+
+/* Save bar */
+.save-bar{position:fixed;bottom:0;left:var(--sb-w);right:0;padding:16px 48px;background:rgba(13,20,40,0.97);border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);z-index:100;transform:translateY(100%);transition:transform 0.3s}
+.save-bar.show{transform:translateY(0)}
+.save-msg{font-size:14px;font-style:italic;color:var(--text-d)}
+.save-btn{background:var(--gold-d);border:none;color:var(--navy4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:12px 32px;cursor:pointer;transition:background 0.2s}
+.save-btn:hover{background:var(--gold)}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}.main{margin-left:0}.save-bar{left:0}}
+@media(max-width:640px){.topbar,.body{padding:16px 20px}}
+
+
+/* All nav items — identical font/size/padding */
+
+
+  
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0 !important;padding-top:52px}
+
+
+/* All nav items — same font / padding / left-border */
+
+
+  .main{margin-left:0 !important;padding-top:52px}
+  .topbar{top:52px}
+
+
+/* ══ SIDEBAR ══════════════════════════════════════════════════════════════ */
+
+/* ══ MOBILE ════════════════════════════════════════════════════════════════ */
+@media(max-width:860px){
+  .sb.open{transform:translateX(0);z-index:350}
+  .main{margin-left:0 !important;padding-top:52px}
+}
+</style>
+<script src="native.js" defer></script></head>
+<body>
+<div class="mob-bar">
+  <a class="mob-logo" href="index.html">Journey with God</a>
+  <button class="mob-ham" onclick="sbOpen()" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mob-overlay" id="mob-overlay" onclick="sbClose()"></div>
+<aside class="sb" id="sidebar">
+  <div class="sb-logo">
+    <a href="index.html">
+      <div class="sb-logo-text">Journey with God</div>
+      <div class="sb-logo-sub">Daily Scripture &amp; Reflection</div>
+    </a>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-link" href="devotion.html">Daily Devotion</a>
+    <button class="sb-btn" id="study-btn" onclick="sbStudy()">Study Topics</button>
+    <div class="sb-sub" id="study-sub">
+      <a class="sb-link" href="learn.html?topic=christian-identity">Identity</a>
+      <a class="sb-link" href="learn.html?topic=the-cross">The Cross</a>
+      <a class="sb-link" href="learn.html?topic=discipleship">Discipleship</a>
+      <a class="sb-link" href="learn.html?topic=apologetics">Apologetics</a>
+      <a class="sb-link" href="learn.html?topic=prayer">Prayer</a>
+      <a class="sb-link" href="learn.html?topic=suffering">Suffering</a>
+      <a class="sb-link" href="learn.html?topic=holy-spirit">Holy Spirit</a>
+      <a class="sb-link" href="learn.html?topic=sin-and-grace">Sin &amp; Grace</a>
+      <a class="sb-link" href="learn.html?topic=the-church">The Church</a>
+      <a class="sb-link" href="learn.html?topic=eternity">Eternity</a>
+      <a class="sb-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
+    </div>
+    <div class="sb-divider"></div>
+    <a class="sb-link" href="calendar.html">Calendar</a>
+    <a class="sb-link" href="archive.html">Archive</a>
+    <a class="sb-link" href="well.html">The Well</a>
+    <a class="sb-link" href="blog.html">Blog</a>
+    <a class="sb-link" href="contact.html">Contact</a>
+    <a class="sb-link on" href="settings.html">Settings</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-foot-date" id="sb-date"></div></div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title">Settings</div>
+    <div class="tb-sub">Preferences</div>
+  </div>
+  <div class="body">
+    <div class="two-col">
+      <div>
+        <!-- Profile -->
+        <div class="sec">
+          <div class="sec-title">Your Profile</div>
+          <div class="profile-row">
+            <div class="avatar" id="avatar">
+              <span id="av-initial">?</span>
+              <div class="avatar-edit">✎</div>
+            </div>
+            <div>
+              <div class="profile-name" id="prof-name">Morning Devotee</div>
+              <div class="profile-role">Daily Reader</div>
+            </div>
+            <button class="profile-edit-btn" onclick="editName()">Edit</button>
+          </div>
+          <div class="field-row">
+            <div class="field-icon">⏰</div>
+            <div class="field-info"><div class="field-lbl">Reading Time</div><div class="field-val" id="rt-val">Morning · 5–7am</div></div>
+            <div class="field-action" onclick="cycleRT()">Change</div>
+          </div>
+          <div class="field-row">
+            <div class="field-icon">📅</div>
+            <div class="field-info"><div class="field-lbl">Member Since</div><div class="field-val" id="member-since"></div></div>
+          </div>
+          <div class="field-row">
+            <div class="field-icon">🕯</div>
+            <div class="field-info"><div class="field-lbl">Streak</div><div class="field-val">—</div></div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="sec">
+          <div class="sec-title">Notifications</div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-lbl">Daily Reminder</div><div class="toggle-sub">Remind me to read at my preferred time</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-lbl">Weekly Summary</div><div class="toggle-sub">Review the week's devotionals on Sunday</div></div>
+            <div class="toggle" onclick="this.classList.toggle('on');dirty()"></div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-lbl">New Topics</div><div class="toggle-sub">Notify when new study content is added</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
+          </div>
+        </div>
+
+        <!-- Reading -->
+        <div class="sec">
+          <div class="sec-title">Reading Preferences</div>
+          <div class="slider-row">
+            <div class="slider-info"><div class="slider-lbl">Font Size</div><div class="slider-val" id="fs-val">Medium</div></div>
+            <input type="range" min="1" max="3" value="2" oninput="setFS(this.value)">
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-lbl">Show Sources</div><div class="toggle-sub">Display theologian source tags on devotionals</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-lbl">Ornamental Dividers</div><div class="toggle-sub">Show decorative section separators</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
+          </div>
+        </div>
+
+        <!-- Danger -->
+        <div class="sec">
+          <div class="sec-title">Privacy & Reset</div>
+          <div class="danger-row">
+            <div><div class="danger-lbl">Clear Progress</div><div class="danger-sub">Reset reading history and streak</div></div>
+            <button class="btn-d" onclick="clearProg()">Reset</button>
+          </div>
+          <div class="danger-row">
+            <div><div class="danger-lbl">Erase Preferences</div><div class="danger-sub">Remove all saved preferences</div></div>
+            <button class="btn-d" onclick="erasePref()">Erase</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div>
+        <div class="plan">
+          <div class="plan-lbl">Current Plan</div>
+          <div class="plan-name">Daily Scripture &amp; Reflection</div>
+          <div class="plan-desc">Full access to all 365 daily devotionals and 84 topic lessons — freely offered.</div>
+          <button class="plan-btn">This is free — Share it</button>
+        </div>
+        <div class="plan">
+          <div class="plan-lbl">About</div>
+          <div class="plan-name">Journey with God</div>
+          <div class="plan-desc">Built for young Christians seeking depth. Sources: Watchman Nee, Dietrich Bonhoeffer, C.S. Lewis, Tim Keller, Ravi Zacharias, and others.</div>
+          <a class="plan-btn" href="index.html">Return to Daily Reading</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="save-bar" id="save-bar">
+  <div class="save-msg">You have unsaved changes</div>
+  <button class="save-btn" onclick="save()">Save Preferences</button>
+</div>
+
+<script>
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const now=new Date();
+document.getElementById('sb-date').innerHTML=`${MONTHS[now.getMonth()]}<br>${now.getDate()}<br>${now.getFullYear()}`;
+document.getElementById('member-since').textContent=`${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+// Load saved prefs
+const name=localStorage.getItem('tew_name')||'Morning Devotee';
+document.getElementById('prof-name').textContent=name;
+document.getElementById('av-initial').textContent=name.charAt(0).toUpperCase();
+
+const FS=['Small','Medium','Large'];
+function setFS(v){document.getElementById('fs-val').textContent=FS[v-1];dirty()}
+
+const RTS=['Morning · 5–7am','Midday · 12–1pm','Evening · 8–10pm'];
+let rtIdx=0;
+function cycleRT(){rtIdx=(rtIdx+1)%3;document.getElementById('rt-val').textContent=RTS[rtIdx];dirty()}
+
+function dirty(){document.getElementById('save-bar').classList.add('show')}
+function save(){
+  localStorage.setItem('tew_name',document.getElementById('prof-name').textContent);
+  document.getElementById('save-bar').classList.remove('show');
+  document.getElementById('save-bar').querySelector('.save-msg').textContent='Saved ✓';
+  setTimeout(()=>{document.getElementById('save-bar').querySelector('.save-msg').textContent='You have unsaved changes'},2000);
+}
+function editName(){
+  const n=prompt('Enter your name:',document.getElementById('prof-name').textContent);
+  if(n&&n.trim()){document.getElementById('prof-name').textContent=n.trim();document.getElementById('av-initial').textContent=n.trim().charAt(0).toUpperCase();dirty()}
+}
+function clearProg(){if(confirm('Reset reading history?')){/* clear */}}
+function erasePref(){if(confirm('Erase all preferences?')){localStorage.clear();location.href='onboarding.html'}}
+
+
+/* ── sidebar ── */
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  // auto-expand study if on learn page
+})();
+
+
+/* ── Sidebar ── */
+
+
+/* ── Sidebar JS ── */
+var _so=false;
+function sbStudy(){
+  _so=!_so;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display=_so?'block':'none';
+  if(b){b.style.color=_so?'var(--gold)':'';b.style.borderLeftColor=_so?'var(--gold-d)':'';b.style.background=_so?'rgba(201,164,58,0.04)':'';}
+}
+function sbStudyExpand(){
+  _so=true;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display='block';
+  if(b){b.style.color='var(--gold)';b.style.borderLeftColor='var(--gold-d)';b.style.background='rgba(201,164,58,0.04)';}
+}
+function sbOpen(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+}
+function sbClose(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+}
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  if(window.location.pathname.indexOf('learn.html')!==-1) sbStudyExpand();
+})();
+
+</script>
+<script>
+(function(){
+  try{
+    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+    const page=window.location.pathname.split('/').pop()||'index.html';
+    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+      fetch(SB+'/rest/v1/visitor_logs',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

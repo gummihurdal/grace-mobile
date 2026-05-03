@@ -1,17 +1,28 @@
 {
   "name": "grace-mobile",
   "version": "1.0.0",
-  "description": "Grace for Every Day — Mobile App",
+  "description": "Grace for Every Day — Mobile App (iOS + Android)",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'Static site — no build needed'"
+    "build": "echo 'Static bundled site — no build step needed'",
+    "sync": "npx cap sync",
+    "ios:add": "npx cap add ios",
+    "android:add": "npx cap add android",
+    "assets": "npx capacitor-assets generate"
   },
   "dependencies": {
     "@capacitor/android": "^7.2.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/browser": "^7.0.0",
     "@capacitor/core": "^7.2.0",
-    "@capacitor/ios": "^7.2.0"
+    "@capacitor/ios": "^7.2.0",
+    "@capacitor/preferences": "^7.0.0",
+    "@capacitor/share": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^7.2.0"
   }
 }

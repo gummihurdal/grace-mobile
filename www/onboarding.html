@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Eternal Word — Welcome</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0E1628;--navy2:#131D35;--navy4:#0A1020;--gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--border:rgba(201,164,58,0.3);--border2:rgba(201,164,58,0.1);--text:#C8B898;--text-d:#6A6050;--text-b:#EDE0C0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+
+/* Botanical background */
+.bg-pattern{
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 80% at 10% 50%,rgba(201,164,58,0.06),transparent),
+    radial-gradient(ellipse 60% 60% at 90% 30%,rgba(201,164,58,0.04),transparent),
+    linear-gradient(135deg,#0a0f1e 0%,#0d1628 40%,#080d18 100%);
+  z-index:0;
+}
+/* Ornamental corners - SVG-like CSS */
+.corner{position:fixed;width:260px;height:260px;opacity:0.15}
+.corner svg{width:100%;height:100%}
+.corner-tl{top:-20px;left:-20px}
+.corner-tr{top:-20px;right:-20px;transform:scaleX(-1)}
+.corner-bl{bottom:-20px;left:-20px;transform:scaleY(-1)}
+.corner-br{bottom:-20px;right:-20px;transform:scale(-1,-1)}
+
+.modal{
+  position:relative;z-index:10;
+  background:rgba(13,20,40,0.95);
+  border:1px solid var(--border2);
+  width:100%;max-width:480px;
+  padding:0;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(201,164,58,0.05);
+  animation:rise 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+.modal-top{height:3px;background:linear-gradient(to right,transparent,var(--gold-d),var(--gold),var(--gold-d),transparent)}
+.modal-inner{padding:48px 44px 40px}
+
+.step{display:none}
+.step.on{display:block;animation:rise 0.35s ease both}
+
+/* Step 1 */
+.logo-w{text-align:center;margin-bottom:36px}
+.logo-icon{width:52px;height:52px;margin:0 auto 16px;position:relative}
+.flame-body{width:14px;height:30px;background:linear-gradient(to top,var(--gold),var(--gold-l));margin:22px auto 0;border-radius:2px}
+.flame-flame{width:18px;height:22px;background:linear-gradient(to top,#D4862A,var(--gold-l),#fff8e0);border-radius:50% 50% 30% 30%/60% 60% 40% 40%;position:absolute;top:4px;left:17px;animation:flicker 2.5s ease-in-out infinite;box-shadow:0 0 12px rgba(212,134,42,0.6)}
+@keyframes flicker{0%,100%{transform:scaleX(1) rotate(-1deg)}50%{transform:scaleX(1.07) rotate(1.5deg)}}
+.logo-name{font-family:'Cinzel',serif;font-size:17px;font-weight:600;letter-spacing:3px;color:var(--gold)}
+.logo-sub{font-size:14px;font-style:italic;color:var(--text-d);margin-top:4px}
+
+.step-title{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,24px);font-weight:600;color:var(--text-b);text-align:center;margin-bottom:8px}
+.step-sub{font-size:16px;font-style:italic;color:var(--text-d);text-align:center;line-height:1.7;margin-bottom:32px}
+
+.field{margin-bottom:20px}
+.field label{display:block;font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);margin-bottom:8px}
+.field input,.field select{
+  width:100%;background:var(--navy);border:1px solid var(--border2);
+  color:var(--text-b);font-family:'Cormorant Garamond',serif;font-size:17px;
+  padding:12px 16px;outline:none;transition:border 0.2s;
+}
+.field input::placeholder{color:var(--text-d)}
+.field input:focus,.field select:focus{border-color:var(--gold-d)}
+.field select option{background:var(--navy2)}
+
+/* Reading time selector */
+.rt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.rt-opt{border:1px solid var(--border2);padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--navy)}
+.rt-opt:hover{border-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.rt-opt.on{border-color:var(--gold);background:rgba(201,164,58,0.08)}
+.rt-t{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-d);transition:color 0.2s}
+.rt-opt.on .rt-t,.rt-opt:hover .rt-t{color:var(--text-b)}
+.rt-sub{font-size:12px;color:var(--text-d);margin-top:4px}
+
+/* Focus areas */
+.focus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.focus-opt{border:1px solid var(--border2);padding:12px 14px;cursor:pointer;transition:all 0.2s;background:var(--navy);display:flex;align-items:center;gap:10px}
+.focus-opt:hover{border-color:var(--gold-d)}
+.focus-opt.on{border-color:var(--gold);background:rgba(201,164,58,0.06)}
+.focus-dot{width:6px;height:6px;border-radius:50%;background:var(--text-d);transition:background 0.2s;flex-shrink:0}
+.focus-opt.on .focus-dot{background:var(--gold)}
+.focus-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-d);transition:color 0.2s}
+.focus-opt.on .focus-lbl,.focus-opt:hover .focus-lbl{color:var(--text-b)}
+
+/* Buttons */
+.btn-row{display:flex;gap:12px;margin-top:28px}
+.btn-back{flex:1;background:none;border:1px solid var(--border2);color:var(--text-d);font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:14px;cursor:pointer;transition:all 0.2s}
+.btn-back:hover{border-color:var(--gold-d);color:var(--text-b)}
+.btn-next{flex:2;background:var(--navy2);border:1px solid var(--gold-d);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:14px;cursor:pointer;transition:all 0.3s}
+.btn-next:hover{background:var(--gold-d);color:var(--navy4)}
+.btn-skip{display:block;text-align:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);margin-top:16px;text-decoration:none;transition:color 0.2s;cursor:pointer}
+.btn-skip:hover{color:var(--text-b)}
+
+/* Progress dots */
+.dots{display:flex;gap:8px;justify-content:center;margin-bottom:32px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all 0.3s}
+.dot.on{background:var(--gold);width:20px;border-radius:3px}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script src="native.js" defer></script></head>
+<body>
+<!-- Botanical bg -->
+<div class="bg-pattern"></div>
+<div class="corner corner-tl">
+  <svg viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 240 C20 140 80 80 180 20" stroke="#C9A43A" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M10 200 C40 140 100 100 160 40" stroke="#C9A43A" stroke-width="0.8" fill="none" opacity="0.4"/>
+    <path d="M60 240 C60 180 100 120 160 80 C200 50 230 30 240 10" stroke="#8A6E20" stroke-width="1" fill="none"/>
+    <ellipse cx="90" cy="160" rx="28" ry="18" transform="rotate(-30 90 160)" stroke="#C9A43A" stroke-width="0.8" opacity="0.5"/>
+    <ellipse cx="140" cy="100" rx="22" ry="14" transform="rotate(-50 140 100)" stroke="#C9A43A" stroke-width="0.8" opacity="0.4"/>
+    <ellipse cx="50" cy="210" rx="20" ry="13" transform="rotate(-10 50 210)" stroke="#8A6E20" stroke-width="0.7" opacity="0.5"/>
+    <circle cx="85" cy="158" r="3" fill="#C9A43A" opacity="0.4"/>
+    <circle cx="138" cy="98" r="2.5" fill="#C9A43A" opacity="0.3"/>
+  </svg>
+</div>
+<div class="corner corner-tr">
+  <svg viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 240 C20 140 80 80 180 20" stroke="#C9A43A" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M10 200 C40 140 100 100 160 40" stroke="#C9A43A" stroke-width="0.8" fill="none" opacity="0.4"/>
+    <path d="M60 240 C60 180 100 120 160 80 C200 50 230 30 240 10" stroke="#8A6E20" stroke-width="1" fill="none"/>
+    <ellipse cx="90" cy="160" rx="28" ry="18" transform="rotate(-30 90 160)" stroke="#C9A43A" stroke-width="0.8" opacity="0.5"/>
+    <ellipse cx="140" cy="100" rx="22" ry="14" transform="rotate(-50 140 100)" stroke="#C9A43A" stroke-width="0.8" opacity="0.4"/>
+  </svg>
+</div>
+<div class="corner corner-bl">
+  <svg viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 240 C20 140 80 80 180 20" stroke="#C9A43A" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M60 240 C60 180 100 120 160 80" stroke="#8A6E20" stroke-width="1" fill="none"/>
+    <ellipse cx="90" cy="160" rx="28" ry="18" transform="rotate(-30 90 160)" stroke="#C9A43A" stroke-width="0.8" opacity="0.5"/>
+  </svg>
+</div>
+<div class="corner corner-br">
+  <svg viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 240 C20 140 80 80 180 20" stroke="#C9A43A" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M60 240 C60 180 100 120 160 80" stroke="#8A6E20" stroke-width="1" fill="none"/>
+    <ellipse cx="90" cy="160" rx="28" ry="18" transform="rotate(-30 90 160)" stroke="#C9A43A" stroke-width="0.8" opacity="0.5"/>
+  </svg>
+</div>
+
+<div class="modal">
+  <div class="modal-top"></div>
+  <div class="modal-inner">
+    <div class="dots">
+      <div class="dot on" id="d0"></div>
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+    </div>
+
+    <!-- Step 0: Welcome -->
+    <div class="step on" id="s0">
+      <div class="logo-w">
+        <div class="logo-icon">
+          <div class="flame-flame"></div>
+          <div class="flame-body"></div>
+        </div>
+        <div class="logo-name">The Eternal Word</div>
+        <div class="logo-sub">Daily Devotional</div>
+      </div>
+      <div class="step-title">Welcome</div>
+      <div class="step-sub">Daily scripture, reflection, and quiet reading to anchor your day — drawn from the great theologians.</div>
+      <div class="field"><label>Your Name</label><input type="text" id="name" placeholder="Enter your name"></div>
+      <div class="field">
+        <label>Preferred Reading Time</label>
+        <div class="rt-grid">
+          <div class="rt-opt on" onclick="pick(this,'rt')"><div class="rt-t">Morning</div><div class="rt-sub">5–7am</div></div>
+          <div class="rt-opt" onclick="pick(this,'rt')"><div class="rt-t">Midday</div><div class="rt-sub">12–1pm</div></div>
+          <div class="rt-opt" onclick="pick(this,'rt')"><div class="rt-t">Evening</div><div class="rt-sub">8–10pm</div></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="go(1)">Continue →</button>
+      </div>
+      <a class="btn-skip" href="index.html">Skip for now</a>
+    </div>
+
+    <!-- Step 1: Focus -->
+    <div class="step" id="s1">
+      <div class="step-title">Choose Your Focus</div>
+      <div class="step-sub">Which areas of study will anchor your first season? You can change this at any time.</div>
+      <div class="focus-grid">
+        <div class="focus-opt on" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">The Cross</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Discipleship</span></div>
+        <div class="focus-opt on" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Prayer</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Suffering</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Holy Spirit</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Apologetics</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Holiness</span></div>
+        <div class="focus-opt" onclick="toggle(this)"><div class="focus-dot"></div><span class="focus-lbl">Eternity</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="go(0)">← Back</button>
+        <button class="btn-next" onclick="go(2)">Continue →</button>
+      </div>
+      <a class="btn-skip" href="index.html">Skip for now</a>
+    </div>
+
+    <!-- Step 2: Begin -->
+    <div class="step" id="s2">
+      <div class="step-title">You Are Ready</div>
+      <div class="step-sub">"I have hidden your word in my heart that I might not sin against you." — Psalm 119:11</div>
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);margin-bottom:12px">Today's Reading</div>
+        <div style="font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--gold-d)" id="s2-date"></div>
+        <div style="margin:20px 0;height:1px;background:var(--border2)"></div>
+        <div style="font-size:16px;font-style:italic;color:var(--text-d)">Begin in stillness. Find a quiet place. Open your heart.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="go(1)">← Back</button>
+        <button class="btn-next" onclick="finish()">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const now=new Date();
+document.getElementById('s2-date').textContent=`${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()}`;
+
+function go(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('on',i===n)});
+}
+function pick(el,grp){
+  el.closest('.rt-grid,.focus-grid').querySelectorAll('.rt-opt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on');
+}
+function toggle(el){el.classList.toggle('on')}
+function finish(){
+  localStorage.setItem('tew_onboarded','1');
+  localStorage.setItem('tew_name',document.getElementById('name')?.value||'');
+  window.location.href='index.html';
+}
+// Skip if already onboarded
+if(localStorage.getItem('tew_onboarded')==='1')window.location.href='index.html';
+</script>
+</body>
+</html>

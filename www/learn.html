@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey with God — Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;
+  display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sb{
+  width:220px;min-width:220px;background:var(--navy);
+  border-right:1px solid var(--border2);
+  position:fixed;top:0;left:0;height:100vh;
+  display:flex;flex-direction:column;z-index:300;
+  transition:transform .3s ease;
+}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border2)}
+.sb-logo a{text-decoration:none;display:block}
+.sb-logo-text{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--gold)}
+.sb-logo-sub{font-size:11px;color:var(--text-d);margin-top:3px;font-style:italic}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-link,.sb-btn{
+  display:block;width:100%;padding:11px 24px;
+  text-decoration:none;text-align:left;background:none;
+  border:none;border-left:2px solid transparent;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--text-b);
+  cursor:pointer;transition:all .2s;box-sizing:border-box;
+  line-height:1.4;
+}
+.sb-link:hover,.sb-btn:hover{color:var(--gold);border-left-color:var(--gold-d);background:rgba(201,164,58,0.04)}
+.sb-link.on,.sb-btn.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.07)}
+.sb-sub{display:none}
+.sb-divider{height:1px;background:rgba(201,164,58,0.2);margin:8px 16px;}
+.sb-foot{padding:20px 24px;border-top:1px solid var(--border2);margin-top:auto}
+.sb-foot-date{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px;color:var(--text-b);line-height:2.1;font-weight:500}
+
+/* ── MOBILE BAR ── */
+.mob-bar{
+  display:none;position:fixed;top:0;left:0;right:0;height:52px;
+  background:var(--navy);border-bottom:1px solid var(--border2);
+  z-index:400;align-items:center;justify-content:space-between;padding:0 20px;
+}
+.mob-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;
+  letter-spacing:2px;color:var(--gold);text-decoration:none}
+.mob-ham{background:none;border:none;cursor:pointer;
+  padding:8px;display:flex;flex-direction:column;gap:5px}
+.mob-ham span{display:block;width:22px;height:2px;background:var(--gold-d)}
+.mob-overlay{display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:290}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;border-bottom:1px solid var(--border2);
+  background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px);
+}
+.tb-greeting{font-family:'Cinzel',serif;font-size:13px;font-weight:500;color:var(--text-b);letter-spacing:1px}
+.tb-date{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-b);opacity:.9}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .mob-bar{display:flex}
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .mob-overlay.open{display:block}
+  .main{margin-left:0!important;padding-top:52px}
+  .topbar{padding:12px 16px}
+  .body,.hero{padding-left:16px!important;padding-right:16px!important}
+  .two-col{grid-template-columns:1fr!important}
+  .cards-row{grid-template-columns:1fr!important}
+}
+
+:root{--navy:#0E1628;--navy2:#131D35;--navy4:#0A1020;--gold:#C9A43A;--gold-l:#E0BC5A;--gold-d:#8A6E20;--border:rgba(201,164,58,0.15);--border2:rgba(201,164,58,0.08);--text:#E2D0A8;--text-d:#A09070;--text-b:#F8EED4;--sb-w:220px;--tsb-w:260px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy4);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+
+/* Nav sidebar */
+.nav-sb{width:var(--sb-w);min-width:var(--sb-w);background:var(--navy);border-right:1px solid var(--border2);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:200}
+
+
+/* Shell */
+.shell{margin-left:var(--sb-w);flex:1;display:flex}
+
+/* Topic sidebar */
+.topic-sb{width:var(--tsb-w);min-width:var(--tsb-w);background:var(--navy2);border-right:1px solid var(--border2);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.tsb-head{padding:28px 20px 20px;border-bottom:1px solid var(--border2)}
+.tsb-back{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:#C0A870;text-decoration:none;display:block;margin-bottom:16px;transition:color 0.2s}
+.tsb-back:hover{color:var(--gold)}
+.tsb-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:var(--text-b);line-height:1.3}
+.tsb-sub{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);margin-top:5px}
+.tsb-list{padding:6px 0}
+.tsb-ov{display:block;padding:10px 20px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d);border-left:2px solid transparent;cursor:pointer;transition:all 0.2s}
+.tsb-ov:hover,.tsb-ov.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,164,58,0.05)}
+.tsb-lesson{display:flex;gap:12px;padding:10px 20px;border-left:2px solid transparent;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.tsb-lesson:hover{background:rgba(201,164,58,0.03);border-left-color:var(--gold-d)}
+.tsb-lesson.on{background:rgba(201,164,58,0.06);border-left-color:var(--gold)}
+.tsb-n{font-family:'Cinzel',serif;font-size:9px;color:var(--text-d);min-width:16px;margin-top:2px}
+.tsb-lesson.on .tsb-n{color:var(--gold-d)}
+.tsb-lt{font-size:13px;line-height:1.5;color:#D0B888;transition:color 0.2s}
+.tsb-lesson:hover .tsb-lt,.tsb-lesson.on .tsb-lt{color:var(--text-b)}
+
+/* Content */
+.content{flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border2);background:rgba(14,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.tb-title{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:var(--text-b);letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:400px}
+.tb-prog{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-d)}
+
+/* Overview */
+#overview{padding:44px 40px 80px;display:none}
+.ov-hero{padding-bottom:32px;border-bottom:1px solid var(--border2);margin-bottom:28px}
+.ov-title{font-family:'Cinzel',serif;font-size:clamp(20px,2.5vw,26px);font-weight:600;color:var(--text-b);margin-bottom:8px}
+.ov-sub{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.ov-desc{font-size:17px;font-style:italic;color:var(--text-d);line-height:1.85}
+.ov-list{display:flex;flex-direction:column;gap:1px;background:var(--border2)}
+.ov-item{display:flex;align-items:center;gap:16px;background:var(--navy);padding:18px 22px;cursor:pointer;border-left:2px solid transparent;transition:all 0.25s}
+.ov-item:hover{background:var(--navy2);border-left-color:var(--gold)}
+.ov-num{font-family:'Cinzel',serif;font-size:9px;color:var(--text-d);min-width:18px}
+.ov-ts{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:var(--text-b)}
+.ov-arr{margin-left:auto;color:var(--text-d);transition:all 0.25s}
+.ov-item:hover .ov-arr{color:var(--gold);transform:translateX(4px)}
+
+/* Lesson */
+#lesson-view{display:none;padding:40px 40px 80px;flex:1;flex-direction:column}
+.lv-head{padding-bottom:28px;border-bottom:1px solid var(--border2);margin-bottom:28px}
+.lv-num{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--text-d);margin-bottom:12px}
+.lv-title{font-family:'Cinzel',serif;font-size:clamp(18px,2.5vw,24px);font-weight:600;color:var(--text-b)}
+.two-col{display:grid;grid-template-columns:1fr 260px;gap:24px}
+
+.key-idea{background:var(--navy2);border:1px solid var(--border2);border-left:2px solid var(--gold-d);padding:18px 22px;margin-bottom:22px}
+.ki-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px}
+.ki-t{font-family:'Cinzel',serif;font-size:14px;font-weight:500;color:var(--text-b);line-height:1.65}
+
+.sc-block{margin-bottom:28px}
+.sc-ref{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:12px}
+.sc-t{font-size:clamp(20px,2.5vw,26px);font-weight:300;font-style:italic;color:var(--text-b);line-height:1.7}
+
+.orn{display:flex;align-items:center;gap:14px;margin:22px 0;opacity:0.2}
+.orn-l{flex:1;height:1px;background:var(--gold)}
+.orn-s{color:var(--gold);font-size:8px;letter-spacing:6px}
+
+.block-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.med-body p{font-size:clamp(17px,1.8vw,19px);line-height:2.05;color:var(--text);margin-bottom:18px}
+.med-body p:last-child{margin-bottom:0}
+
+.qbar{border-left:2px solid var(--gold-d);padding:18px 24px;background:rgba(201,164,58,0.04);margin:22px 0}
+.qbar-t{font-size:17px;font-style:italic;color:var(--text-b);line-height:1.7}
+.qbar-by{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);margin-top:10px}
+
+.src-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.src-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border:1px solid var(--border);color:var(--text-d)}
+
+.call-block{background:#1A2848;border:1px solid rgba(201,164,58,0.2);border-top:2px solid var(--gold-d);padding:24px 28px;margin-bottom:18px;text-align:center}
+.call-text{font-family:'Cinzel',serif;font-size:clamp(13px,1.5vw,15px);font-weight:600;color:#F5E6C0;line-height:1.9}
+.pray-block{background:#162038;border:1px solid rgba(201,164,58,0.15);padding:28px;margin-bottom:18px;text-align:center}
+.pray-text{font-size:clamp(16px,1.7vw,19px);font-style:italic;font-weight:300;color:#F0E0B8;line-height:2}
+
+.sp{background:var(--navy);border:1px solid var(--border2);padding:22px;margin-bottom:14px}
+.sp-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d);margin-bottom:16px}
+.sp-q{padding:14px 0;border-bottom:1px solid var(--border2)}
+.sp-q:first-child{padding-top:0}
+.sp-q:last-child{border-bottom:none;padding-bottom:0}
+.sp-qt{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);margin-bottom:8px}
+.sp-qtxt{font-size:clamp(14px,1.4vw,16px);font-style:italic;font-weight:300;color:var(--text-b);line-height:1.65}
+
+/* Progress bar */
+.progress-bar{height:2px;background:var(--border2);margin-bottom:28px}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--gold-d),var(--gold));transition:width 0.3s}
+
+.lv-nav{display:flex;justify-content:space-between;margin-top:20px;padding-top:20px;border-top:1px solid var(--border2)}
+.lv-btn{background:none;border:1px solid var(--border);color:var(--text-d);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:10px 24px;cursor:pointer;transition:all 0.2s}
+.lv-btn:hover{border-color:var(--gold);color:var(--gold)}
+.lv-btn:disabled{opacity:0.2;cursor:default}
+
+#loading{flex:1;display:flex;align-items:center;justify-content:center}
+.load-t{font-family:'Cinzel',serif;font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--text-d)}
+.fade-in{animation:rise 0.3s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){.nav-sb{display:none}.shell{margin-left:0}.two-col{grid-template-columns:1fr}}
+
+
+/* All nav items — identical font/size/padding */
+
+
+  
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0 !important;padding-top:52px}
+
+
+/* All nav items — same font / padding / left-border */
+
+
+  .main{margin-left:0 !important;padding-top:52px}
+  .topbar{top:52px}
+
+
+/* ══ SIDEBAR ══════════════════════════════════════════════════════════════ */
+
+/* ══ MOBILE ════════════════════════════════════════════════════════════════ */
+@media(max-width:860px){
+  .sb.open{transform:translateX(0);z-index:350}
+  .main{margin-left:0 !important;padding-top:52px}
+}
+</style>
+<script src="native.js" defer></script></head>
+<body>
+<div class="mob-bar">
+  <a class="mob-logo" href="index.html">Journey with God</a>
+  <button class="mob-ham" onclick="sbOpen()" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mob-overlay" id="mob-overlay" onclick="sbClose()"></div>
+<aside class="sb" id="sidebar">
+  <div class="sb-logo">
+    <a href="index.html">
+      <div class="sb-logo-text">Journey with God</div>
+      <div class="sb-logo-sub">Daily Scripture &amp; Reflection</div>
+    </a>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-link" href="devotion.html">Daily Devotion</a>
+    <button class="sb-btn" id="study-btn" onclick="sbStudy()">Study Topics</button>
+    <div class="sb-sub" id="study-sub">
+      <a class="sb-link" href="learn.html?topic=christian-identity">Identity</a>
+      <a class="sb-link" href="learn.html?topic=the-cross">The Cross</a>
+      <a class="sb-link" href="learn.html?topic=discipleship">Discipleship</a>
+      <a class="sb-link" href="learn.html?topic=apologetics">Apologetics</a>
+      <a class="sb-link" href="learn.html?topic=prayer">Prayer</a>
+      <a class="sb-link" href="learn.html?topic=suffering">Suffering</a>
+      <a class="sb-link" href="learn.html?topic=holy-spirit">Holy Spirit</a>
+      <a class="sb-link" href="learn.html?topic=sin-and-grace">Sin &amp; Grace</a>
+      <a class="sb-link" href="learn.html?topic=the-church">The Church</a>
+      <a class="sb-link" href="learn.html?topic=eternity">Eternity</a>
+      <a class="sb-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
+    </div>
+    <div class="sb-divider"></div>
+    <a class="sb-link" href="calendar.html">Calendar</a>
+    <a class="sb-link" href="archive.html">Archive</a>
+    <a class="sb-link" href="well.html">The Well</a>
+    <a class="sb-link" href="blog.html">Blog</a>
+    <a class="sb-link" href="contact.html">Contact</a>
+    <a class="sb-link" href="settings.html">Settings</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-foot-date" id="sb-date"></div></div>
+</aside>
+<div class="shell">
+  <aside class="topic-sb" id="topic-sb">
+    <div class="tsb-head">
+      <a class="tsb-back" href="index.html">← Daily Devotion</a>
+      <div class="tsb-title" id="tsb-title"></div>
+      <div class="tsb-sub" id="tsb-sub"></div>
+    </div>
+    <div class="tsb-list" id="tsb-list"></div>
+  </aside>
+  <main class="content">
+    <div class="topbar">
+      <div class="tb-title" id="tb-title">Loading…</div>
+      <div class="tb-prog" id="tb-prog"></div>
+    </div>
+    <div id="loading"><span class="load-t">Preparing your study</span></div>
+    <div id="overview"></div>
+    <div id="lesson-view"></div>
+  </main>
+</div>
+
+<script>
+const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+const params=new URLSearchParams(location.search);
+const slug=params.get('topic');const initLesson=parseInt(params.get('lesson')||'0');
+let topic=null,lessons=[],cur=0;
+if(!slug)location.href='topics.html';
+
+async function init(){
+  const[tr,lr]=await Promise.all([
+    fetch(`${SB}/rest/v1/topics?slug=eq.${slug}&select=*&limit=1`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}}).then(r=>r.json()),
+    fetch(`${SB}/rest/v1/lessons?topic_slug=eq.${slug}&select=*&order=lesson_number.asc`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}}).then(r=>r.json())
+  ]);
+  if(!tr?.length){location.href='topics.html';return}
+  topic=tr[0];lessons=lr;
+  document.title=`${topic.title} — Journey with God`;
+  document.getElementById('tsb-title').textContent=topic.title;
+  document.getElementById('tsb-sub').textContent=topic.subtitle;
+  document.getElementById('tb-title').textContent=topic.title;
+  document.querySelectorAll('.sb-link').forEach(a=>a.classList.toggle('on',a.getAttribute('href')?.includes(slug)));
+  buildSidebar();
+  document.getElementById('loading').style.display='none';
+  if(initLesson&&lessons.find(l=>l.lesson_number===initLesson))showLesson(initLesson);
+  else showOverview();
+}
+
+function buildSidebar(){
+  document.getElementById('tsb-list').innerHTML=
+    `<div class="tsb-ov on" id="sb-ov" onclick="showOverview()">Overview</div>`+
+    lessons.map(l=>`<div class="tsb-lesson" id="sb-${l.lesson_number}" onclick="showLesson(${l.lesson_number})"><span class="tsb-n">${l.lesson_number}</span><span class="tsb-lt">${l.title}</span></div>`).join('');
+}
+
+function setActive(id){
+  document.querySelectorAll('.tsb-ov,.tsb-lesson').forEach(el=>el.classList.remove('on'));
+  document.getElementById(id)?.classList.add('on');
+}
+
+function showOverview(){
+  cur=0;document.getElementById('lesson-view').style.display='none';
+  document.getElementById('tb-prog').textContent=`${lessons.length} Lessons`;
+  setActive('sb-ov');
+  const ov=document.getElementById('overview');
+  ov.style.display='block';
+  ov.innerHTML=`
+    <div class="ov-hero">
+      <div class="ov-title">${topic.title}</div>
+      <div class="ov-sub">${topic.subtitle}</div>
+      <div class="ov-desc">${topic.description}</div>
+    </div>
+    <div class="ov-list">${lessons.map(l=>`
+      <div class="ov-item" onclick="showLesson(${l.lesson_number})">
+        <span class="ov-num">${l.lesson_number}</span>
+        <span class="ov-ts">${l.title}</span>
+        <span class="ov-arr">→</span>
+      </div>`).join('')}</div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showLesson(num){
+  const l=lessons.find(x=>x.lesson_number===num);if(!l)return;
+  cur=num;history.replaceState(null,'',`?topic=${slug}&lesson=${num}`);
+  document.getElementById('overview').style.display='none';setActive(`sb-${num}`);
+  document.getElementById('tb-title').textContent=l.title;
+  document.getElementById('tb-prog').textContent=`Lesson ${num} of ${lessons.length}`;
+  const pct=Math.round((num/lessons.length)*100);
+  const paras=l.meditation.split(/\n\n|\n/).filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
+  const srcs=(l.sources||[]).map(s=>`<span class="src-tag">${s}</span>`).join('');
+  const qs=(l.reflection_questions||[]).map(q=>`<div class="sp-q"><div class="sp-qt">${q.topic}</div><div class="sp-qtxt">${q.question}</div></div>`).join('');
+  const lv=document.getElementById('lesson-view');
+  lv.style.display='flex';lv.classList.add('fade-in');setTimeout(()=>lv.classList.remove('fade-in'),350);
+  lv.innerHTML=`
+    <div class="lv-head">
+      <div class="lv-num">Lesson ${num} of ${lessons.length}</div>
+      <div class="lv-title">${l.title}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="two-col">
+      <div>
+        ${l.key_idea?`<div class="key-idea"><div class="ki-lbl">Key Idea</div><div class="ki-t">${l.key_idea}</div></div>`:''}
+        <div class="sc-block"><div class="sc-ref">${l.scripture_reference}</div><div class="sc-t">"${l.scripture_text}"</div></div>
+        <div class="orn"><div class="orn-l"></div><span class="orn-s">· · ·</span><div class="orn-l"></div></div>
+        <div class="block-lbl">Meditation</div>
+        <div class="med-body">${paras}</div>
+        <div class="qbar"><div class="qbar-t">"${l.quote_text}"</div><div class="qbar-by">— ${l.quote_author}</div></div>
+        <div class="src-row">${srcs}</div>
+        <div class="orn"><div class="orn-l"></div><span class="orn-s">· · ·</span><div class="orn-l"></div></div>
+        ${l.call_to_action?`<div class="call-block"><div class="block-lbl">Today's Call</div><div class="call-text">${l.call_to_action}</div></div>`:''}
+        ${l.prayer?`<div class="pray-block"><div class="block-lbl">Closing Prayer</div><div class="pray-text">${l.prayer}</div></div>`:''}
+        <div class="lv-nav">
+          <button class="lv-btn" onclick="navigate(-1)" ${num<=1?'disabled':''}>← Previous</button>
+          <button class="lv-btn" onclick="navigate(1)" ${num>=lessons.length?'disabled':''}>Next →</button>
+        </div>
+      </div>
+      <div><div class="sp"><div class="sp-lbl">Reflection</div>${qs}</div></div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function navigate(dir){showLesson(cur+dir)}
+init().catch(console.error);
+
+
+/* ── sidebar ── */
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  // auto-expand study if on learn page
+})();
+
+
+/* ── Sidebar ── */
+
+
+/* ── Sidebar JS ── */
+var _so=false;
+function sbStudy(){
+  _so=!_so;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display=_so?'block':'none';
+  if(b){b.style.color=_so?'var(--gold)':'';b.style.borderLeftColor=_so?'var(--gold-d)':'';b.style.background=_so?'rgba(201,164,58,0.04)':'';}
+}
+function sbStudyExpand(){
+  _so=true;
+  var s=document.getElementById('study-sub');
+  var b=document.getElementById('study-btn');
+  if(s) s.style.display='block';
+  if(b){b.style.color='var(--gold)';b.style.borderLeftColor='var(--gold-d)';b.style.background='rgba(201,164,58,0.04)';}
+}
+function sbOpen(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+}
+function sbClose(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+}
+(function(){
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date();
+  var el=document.getElementById('sb-date');
+  if(el) el.innerHTML=DAYS[now.getDay()]+'<br>'+MON[now.getMonth()]+' '+now.getDate()+'<br>'+now.getFullYear();
+  if(window.location.pathname.indexOf('learn.html')!==-1) sbStudyExpand();
+})();
+
+</script>
+<script>
+(function(){
+  try{
+    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
+    const page=window.location.pathname.split('/').pop()||'index.html';
+    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+      fetch(SB+'/rest/v1/visitor_logs',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
