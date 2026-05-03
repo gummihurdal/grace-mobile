@@ -1,0 +1,112 @@
+name: Build & Upload Android App
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: 'Play Store track (internal | alpha | beta | production)'
+        required: true
+        default: 'internal'
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Decode keystore
+        run: |
+          mkdir -p android/app/keystore
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/keystore/release.jks
+
+      - name: Configure signing
+        working-directory: android
+        run: |
+          cat >> app/build.gradle << 'GRADLE'
+
+          android {
+            signingConfigs {
+              release {
+                storeFile file("keystore/release.jks")
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+              }
+            }
+            buildTypes {
+              release {
+                signingConfig signingConfigs.release
+                minifyEnabled false
+              }
+            }
+          }
+          GRADLE
+
+      - name: Build release AAB
+        working-directory: android
+        run: ./gradlew bundleRelease
+
+      - name: Setup Fastlane
+        run: gem install fastlane
+
+      - name: Create Fastfile
+        working-directory: android
+        run: |
+          mkdir -p fastlane
+          echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" > fastlane/play-service-account.json
+          cat > fastlane/Fastfile << 'FAST'
+          default_platform(:android)
+          platform :android do
+            lane :release do |options|
+              upload_to_play_store(
+                track: options[:track] || "internal",
+                aab: "app/build/outputs/bundle/release/app-release.aab",
+                json_key: "fastlane/play-service-account.json",
+                package_name: "day.graceforevery.app",
+                skip_upload_apk: true,
+                skip_upload_metadata: true,
+                skip_upload_changelogs: true,
+                skip_upload_images: true,
+                skip_upload_screenshots: true
+              )
+            end
+          end
+          FAST
+
+      - name: Upload to Play Store
+        working-directory: android
+        run: fastlane release track:${{ github.event.inputs.track }}
+
+      - name: Upload AAB artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Grace-Android-AAB
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: ignore
