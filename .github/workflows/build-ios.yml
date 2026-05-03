@@ -13,6 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Select latest Xcode (Apple now requires Xcode 26+)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,6 +31,11 @@ jobs:
 
       - name: Generate icons and splash
         run: npx capacitor-assets generate --ios
+
+      - name: Mark app as exempt from non-standard encryption (HTTPS only)
+        run: |
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" ios/App/App/Info.plist 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" ios/App/App/Info.plist
 
       - name: Sync Capacitor
         run: npx cap sync ios
