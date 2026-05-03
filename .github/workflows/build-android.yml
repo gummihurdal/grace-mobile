@@ -106,36 +106,52 @@ jobs:
         working-directory: android
         run: ./gradlew bundleRelease
 
-      - name: Setup Fastlane
-        run: gem install fastlane
-
-      - name: Create Fastfile
-        working-directory: android
+      - name: Upload AAB to Play Store
+        env:
+          TRACK: ${{ github.event.inputs.track }}
         run: |
-          mkdir -p fastlane
-          echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" > fastlane/play-service-account.json
-          cat > fastlane/Fastfile << 'FAST'
-          default_platform(:android)
-          platform :android do
-            lane :release do |options|
-              upload_to_play_store(
-                track: options[:track] || "internal",
-                aab: "app/build/outputs/bundle/release/app-release.aab",
-                json_key: "fastlane/play-service-account.json",
-                package_name: "day.graceforevery.app",
-                skip_upload_apk: true,
-                skip_upload_metadata: true,
-                skip_upload_changelogs: true,
-                skip_upload_images: true,
-                skip_upload_screenshots: true
-              )
-            end
-          end
-          FAST
+          python3 - << 'PYEOF'
+          import json, os
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
 
-      - name: Upload to Play Store
-        working-directory: android
-        run: fastlane release track:${{ github.event.inputs.track }}
+          PACKAGE = 'day.graceforevery.app'
+          AAB_PATH = 'android/app/build/outputs/bundle/release/app-release.aab'
+          TRACK = os.environ['TRACK']
+
+          info = json.loads(os.environ['GOOGLE_PLAY_SERVICE_ACCOUNT_JSON'])
+          creds = service_account.Credentials.from_service_account_info(
+              info, scopes=['https://www.googleapis.com/auth/androidpublisher'])
+          svc = build('androidpublisher', 'v3', credentials=creds, cache_discovery=False)
+
+          # 1. Open an edit
+          edit = svc.edits().insert(packageName=PACKAGE, body={}).execute()
+          edit_id = edit['id']
+          print(f"Edit created: {edit_id}")
+
+          # 2. Upload AAB
+          media = MediaFileUpload(AAB_PATH, mimetype='application/octet-stream', resumable=True)
+          bundle = svc.edits().bundles().upload(
+              packageName=PACKAGE, editId=edit_id, media_body=media
+          ).execute()
+          version_code = bundle['versionCode']
+          print(f"AAB uploaded, version code: {version_code}")
+
+          # 3. Assign to track as a draft (so user can review in Play Console before going out)
+          svc.edits().tracks().update(
+              packageName=PACKAGE, editId=edit_id, track=TRACK,
+              body={'releases': [{
+                  'versionCodes': [str(version_code)],
+                  'status': 'draft'
+              }]}
+          ).execute()
+          print(f"Assigned version {version_code} to track '{TRACK}' as draft")
+
+          # 4. Commit the edit
+          svc.edits().commit(packageName=PACKAGE, editId=edit_id).execute()
+          print(f"✓ Edit committed. Review the draft release in Play Console and roll it out when ready.")
+          PYEOF
 
       - name: Upload AAB artifact
         if: always()
