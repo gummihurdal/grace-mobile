@@ -237,10 +237,34 @@ document.getElementById('topdate').textContent=`${DAYS[now.getDay()]} · ${MONTH
 document.getElementById('sb-date').innerHTML=`${DAYS[now.getDay()]}<br>${MONTHS[now.getMonth()]} ${now.getDate()}<br>${now.getFullYear()}`;
 
 async function init(){
-  const r=await fetch(`${SB}/rest/v1/devotionals?month_day=eq.${mm}-${dd}&select=*&limit=1`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}});
-  const rows=await r.json();
-  if(!rows?.length) throw new Error();
-  const d=rows[0];
+  // Use GraceNative.localDateKey() so it matches the cached/notification keys
+  const todayKey = (window.GraceNative && window.GraceNative.localDateKey) ? window.GraceNative.localDateKey() : `${mm}-${dd}`;
+  let d = null;
+  let fromCache = false;
+
+  // Try network first
+  try{
+    const r=await fetch(`${SB}/rest/v1/devotionals?month_day=eq.${todayKey}&select=*&limit=1`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}});
+    if(r.ok){
+      const rows=await r.json();
+      if(rows && rows.length){
+        d=rows[0];
+        // Cache for offline next time
+        if(window.GraceNative && window.GraceNative.cacheDevotion){
+          window.GraceNative.cacheDevotion(todayKey, d);
+        }
+      }
+    }
+  }catch(_){}
+
+  // Fall back to offline cache if network failed
+  if(!d && window.GraceNative && window.GraceNative.getCachedDevotion){
+    d = await window.GraceNative.getCachedDevotion(todayKey);
+    if(d) fromCache = true;
+  }
+
+  if(!d) throw new Error('no-data');
+
   const paras=d.meditation.split(/\n\n|\n/).filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
   const srcs=(d.sources||[]).map(s=>`<span class="src-tag">${s}</span>`).join('');
   const qs=(d.reflection_questions||[]).map(q=>`<div class="sp-q"><div class="sp-qt">${q.topic}</div><div class="sp-qtxt">${q.question}</div></div>`).join('');
@@ -251,7 +275,7 @@ async function init(){
   app.innerHTML=`
     <!-- Hero -->
     <div class="hero">
-      <div class="hero-eyebrow">${DAYS[now.getDay()]} · ${MONTHS[now.getMonth()]} ${now.getDate()}</div>
+      <div class="hero-eyebrow">${DAYS[now.getDay()]} · ${MONTHS[now.getMonth()]} ${now.getDate()}${fromCache?' · Offline':''}</div>
       <div class="flame">
         <div class="flame-glow"></div>
         <div class="flame-flame"></div>
@@ -263,9 +287,10 @@ async function init(){
       </div>
       <div class="hero-theme">${d.theme}</div>
       <a href="#reading" class="hero-cta">Begin Reading</a>
-      <div class="native-actions" id="nativeActions" style="display:none;margin-top:16px;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button class="hero-cta" id="btnShareDevotion" style="background:transparent;border:1px solid currentColor">Share</button>
-        <button class="hero-cta" id="btnSaveDevotion" style="background:transparent;border:1px solid currentColor">Save</button>
+      <div class="native-actions" id="nativeActions" style="display:none;margin-top:18px;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="hero-cta" id="btnListenDevotion" style="background:transparent;border:1px solid currentColor">▶ Listen</button>
+        <button class="hero-cta" id="btnSaveDevotion" style="background:transparent;border:1px solid currentColor">♥ Save</button>
+        <button class="hero-cta" id="btnShareDevotion" style="background:transparent;border:1px solid currentColor">↗ Share</button>
       </div>
     </div>
 
@@ -318,7 +343,7 @@ async function init(){
           <div class="sp"><div class="sp-lbl">Reflection</div>${qs}</div>
           <div class="sp">
             <div class="sp-lbl">Study Deeper</div>
-            <a class="sp-link" href="topics.html">All Twelve Topics</a>
+            <a class="sp-link" href="topics.html">All Eleven Topics</a>
             <a class="sp-link" href="learn.html?topic=the-cross">The Cross</a>
             <a class="sp-link" href="learn.html?topic=discipleship">Discipleship</a>
             <a class="sp-link" href="learn.html?topic=holiness-of-god">Holiness of God</a>
@@ -327,47 +352,65 @@ async function init(){
         </div>
       </div>
     </div>`;
+
+  // Wire native action bar after render
+  if(window.GraceNative && window.GraceNative.isNative){
+    const bar=document.getElementById('nativeActions');
+    if(bar) bar.style.display='flex';
+    const listenBtn=document.getElementById('btnListenDevotion');
+    const saveBtn=document.getElementById('btnSaveDevotion');
+    const shareBtn=document.getElementById('btnShareDevotion');
+
+    // Listen — native speech synthesis
+    let speaking=false;
+    if(listenBtn){
+      const audio = window.GraceNative.audio;
+      audio.onState((state)=>{
+        if(state==='playing'){ speaking=true; listenBtn.textContent='■ Stop'; }
+        else { speaking=false; listenBtn.textContent='▶ Listen'; }
+      });
+      listenBtn.addEventListener('click',()=>{
+        if(speaking){ audio.stop(); return; }
+        const script = [
+          'Today\'s devotion. ' + (d.theme || ''),
+          'Scripture: ' + (d.scripture_reference || '') + '. ' + (d.scripture_text || ''),
+          'Quote from ' + (d.quote_author || '') + '. ' + (d.quote_text || ''),
+          d.meditation || '',
+          'Today\'s call. ' + (d.call_to_action || ''),
+          'Closing prayer. ' + (d.prayer || ''),
+          'Amen.'
+        ].filter(Boolean).join(' ');
+        audio.speak(script);
+      });
+    }
+
+    // Save — Capacitor Preferences
+    if(saveBtn){
+      const key='dev:'+todayKey;
+      window.GraceNative.listFavorites().then((list)=>{
+        if(list.find((x)=>x.key===key)) saveBtn.textContent='♥ Saved';
+      });
+      saveBtn.addEventListener('click',()=>{
+        window.GraceNative.addFavorite(key,{theme:d.theme,scripture:d.scripture_reference,date:todayKey});
+        saveBtn.textContent='♥ Saved';
+      });
+    }
+
+    // Share — system share sheet
+    if(shareBtn){
+      shareBtn.addEventListener('click',()=>{
+        window.GraceNative.share({
+          title:'Grace for Every Day — '+(d.theme||"Today's Devotion"),
+          text:'"'+d.quote_text+'" — '+d.quote_author+'\n\n'+d.scripture_reference+': '+d.scripture_text,
+          url:'https://graceforevery.day/devotion.html'
+        });
+      });
+    }
+  }
 }
 init().catch(()=>{
   document.getElementById('loading').innerHTML='<span class="load-t">Rest in His presence today</span>';
 });
-
-/* Native action wiring — show buttons only when running in native app */
-(function(){
-  function wireNative(d){
-    if(!window.GraceNative || !window.GraceNative.isNative) return;
-    var bar=document.getElementById('nativeActions');
-    if(bar) bar.style.display='flex';
-    var shareBtn=document.getElementById('btnShareDevotion');
-    var saveBtn=document.getElementById('btnSaveDevotion');
-    if(shareBtn) shareBtn.addEventListener('click',function(){
-      window.GraceNative.share({
-        title:'Grace for Every Day — '+(d.theme||"Today's Devotion"),
-        text:'"'+d.quote_text+'" — '+d.quote_author+'\n\n'+d.scripture_reference+': '+d.scripture_text,
-        url:'https://graceforevery.day/devotion.html'
-      });
-    });
-    if(saveBtn){
-      var key='dev:'+mm+'-'+dd;
-      window.GraceNative.listFavorites().then(function(list){
-        if(list.find(function(x){return x.key===key;})) saveBtn.textContent='Saved ✓';
-      });
-      saveBtn.addEventListener('click',function(){
-        window.GraceNative.addFavorite(key,{theme:d.theme,scripture:d.scripture_reference,date:mm+'-'+dd});
-        saveBtn.textContent='Saved ✓';
-      });
-    }
-  }
-  // Patch init to wire after render
-  var _origInit=init;
-  init=async function(){
-    var r=await fetch(SB+'/rest/v1/devotionals?month_day=eq.'+mm+'-'+dd+'&select=*&limit=1',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-    var rows=await r.json();
-    var d=rows&&rows[0];
-    await _origInit.apply(this,arguments);
-    if(d) setTimeout(function(){wireNative(d);},50);
-  };
-})();
 
 
 /* ── sidebar ── */
@@ -427,21 +470,6 @@ function sbClose(){
   }
 })();
 
-</script>
-<script>
-(function(){
-  try{
-    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
-    const page=window.location.pathname.split('/').pop()||'index.html';
-    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-      fetch(SB+'/rest/v1/visitor_logs',{
-        method:'POST',
-        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
-      });
-    });
-  }catch(e){}
-})();
 </script>
 </body>
 </html>

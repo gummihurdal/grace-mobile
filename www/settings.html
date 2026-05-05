@@ -267,21 +267,24 @@ input[type=range]::-webkit-slider-thumb:hover{background:var(--gold)}
           </div>
         </div>
 
-        <!-- Notifications -->
-        <div class="sec">
-          <div class="sec-title">Notifications</div>
+        <!-- Notifications (native) -->
+        <div class="sec" id="notif-sec">
+          <div class="sec-title">Daily Reminder</div>
           <div class="toggle-row">
-            <div class="toggle-info"><div class="toggle-lbl">Daily Reminder</div><div class="toggle-sub">Remind me to read at my preferred time</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
+            <div class="toggle-info">
+              <div class="toggle-lbl">Daily Devotion Reminder</div>
+              <div class="toggle-sub" id="notif-status">A gentle nudge each morning at your chosen time</div>
+            </div>
+            <div class="toggle" id="notif-toggle" onclick="toggleNotif()"></div>
           </div>
-          <div class="toggle-row">
-            <div class="toggle-info"><div class="toggle-lbl">Weekly Summary</div><div class="toggle-sub">Review the week's devotionals on Sunday</div></div>
-            <div class="toggle" onclick="this.classList.toggle('on');dirty()"></div>
+          <div class="field-row" id="notif-time-row" style="display:none">
+            <div class="field-icon">⏰</div>
+            <div class="field-info" style="flex:1">
+              <div class="field-lbl">Reminder Time</div>
+              <input type="time" id="notif-time" value="07:00" style="background:transparent;border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px;width:140px" onchange="updateNotifTime()">
+            </div>
           </div>
-          <div class="toggle-row">
-            <div class="toggle-info"><div class="toggle-lbl">New Topics</div><div class="toggle-sub">Notify when new study content is added</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on');dirty()"></div>
-          </div>
+          <div class="toggle-sub" id="notif-info" style="margin-top:8px;font-size:12px;color:var(--text-d)">Loading…</div>
         </div>
 
         <!-- Reading -->
@@ -371,6 +374,65 @@ function editName(){
 function clearProg(){if(confirm('Reset reading history?')){/* clear */}}
 function erasePref(){if(confirm('Erase all preferences?')){localStorage.clear();location.href='onboarding.html'}}
 
+/* ── Daily Reminder (native local notifications) ── */
+async function refreshNotifUI(){
+  var statusEl = document.getElementById('notif-status');
+  var infoEl = document.getElementById('notif-info');
+  var toggleEl = document.getElementById('notif-toggle');
+  var timeRow = document.getElementById('notif-time-row');
+  var timeInput = document.getElementById('notif-time');
+  if(!window.GraceNative || !window.GraceNative.isNative){
+    if(statusEl) statusEl.textContent = 'Reminders work in the iOS / Android app.';
+    if(infoEl) infoEl.textContent = 'Open this page in the Grace app to enable notifications.';
+    if(toggleEl) toggleEl.style.opacity = '0.4';
+    return;
+  }
+  try {
+    var s = await window.GraceNative.notifications.status();
+    if(s.enabled){
+      if(toggleEl) toggleEl.classList.add('on');
+      if(timeRow) timeRow.style.display = 'flex';
+      if(timeInput) timeInput.value = s.time || '07:00';
+      if(infoEl) infoEl.textContent = 'You\'ll receive a reminder daily at ' + (s.time || '07:00') + '.';
+    } else {
+      if(toggleEl) toggleEl.classList.remove('on');
+      if(timeRow) timeRow.style.display = 'none';
+      if(s.permission === 'denied'){
+        if(infoEl) infoEl.textContent = 'Notifications are blocked. Enable them in iOS / Android Settings.';
+      } else {
+        if(infoEl) infoEl.textContent = 'Tap the toggle to enable a daily reminder.';
+      }
+    }
+  } catch(e) {
+    if(infoEl) infoEl.textContent = 'Notifications unavailable on this device.';
+  }
+}
+async function toggleNotif(){
+  if(!window.GraceNative || !window.GraceNative.isNative) return;
+  var infoEl = document.getElementById('notif-info');
+  var s = await window.GraceNative.notifications.status();
+  if(s.enabled){
+    await window.GraceNative.notifications.disable();
+    if(infoEl) infoEl.textContent = 'Reminder turned off.';
+  } else {
+    var time = (document.getElementById('notif-time') && document.getElementById('notif-time').value) || '07:00';
+    var r = await window.GraceNative.notifications.enable(time);
+    if(!r.ok && infoEl){
+      infoEl.textContent = r.reason === 'denied' ? 'Permission denied. Enable in Settings.' : 'Could not enable: ' + r.reason;
+    }
+  }
+  refreshNotifUI();
+}
+async function updateNotifTime(){
+  if(!window.GraceNative || !window.GraceNative.isNative) return;
+  var s = await window.GraceNative.notifications.status();
+  if(!s.enabled) return; // only re-schedule if currently on
+  var time = document.getElementById('notif-time').value;
+  await window.GraceNative.notifications.enable(time);
+  refreshNotifUI();
+}
+window.addEventListener('load', function(){ setTimeout(refreshNotifUI, 200); });
+
 
 /* ── sidebar ── */
 (function(){
@@ -420,20 +482,6 @@ function sbClose(){
 })();
 
 </script>
-<script>
-(function(){
-  try{
-    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
-    const page=window.location.pathname.split('/').pop()||'index.html';
-    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-      fetch(SB+'/rest/v1/visitor_logs',{
-        method:'POST',
-        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
-      });
-    });
-  }catch(e){}
-})();
-</script>
+
 </body>
 </html>

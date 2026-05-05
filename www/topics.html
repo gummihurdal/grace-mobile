@@ -264,20 +264,6 @@ function sbClose(){
 })();
 
 </script>
-<script>
-(function(){
-  try{
-    const SB='https://mjphpctvuxmbjhmcscoj.supabase.co',KEY='sb_publishable_MDPfXyMjG0eadmvp7uoqdg_EHwj4Alm';
-    const page=window.location.pathname.split('/').pop()||'index.html';
-    fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-      fetch(SB+'/rest/v1/visitor_logs',{
-        method:'POST',
-        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({ip:d.ip,country:d.country_name,country_code:d.country_code,region:d.region,city:d.city,postal:d.postal,timezone:d.timezone,org:d.org,latitude:d.latitude,longitude:d.longitude,page:page})
-      });
-    });
-  }catch(e){}
-})();
-</script>
+
 </body>
 </html>
