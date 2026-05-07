@@ -37,6 +37,16 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" ios/App/App/Info.plist 2>/dev/null \
             || /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" ios/App/App/Info.plist
 
+      - name: Sync marketing version from package.json
+        run: |
+          # Apple requires bumping CFBundleShortVersionString for each App Store
+          # submission; otherwise upload fails with 'train ... is closed'.
+          # Read major.minor.patch from package.json and inject into Info.plist.
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Setting CFBundleShortVersionString to $VERSION"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" ios/App/App/Info.plist
+
       - name: Sync Capacitor
         run: npx cap sync ios
 

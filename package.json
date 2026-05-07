@@ -1,10 +1,10 @@
 {
   "name": "grace-mobile",
-  "version": "1.0.0",
-  "description": "Grace for Every Day — Mobile App (iOS + Android)",
+  "version": "1.1.0",
+  "description": "Grace for Every Day \u2014 Mobile App (iOS + Android)",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'Static bundled site — no build step needed'",
+    "build": "echo 'Static bundled site \u2014 no build step needed'",
     "sync": "npx cap sync",
     "ios:add": "npx cap add ios",
     "android:add": "npx cap add android",
